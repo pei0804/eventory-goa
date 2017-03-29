@@ -27,4 +27,3 @@ _testmain.go
 .DS_Store
 .idea/
 eventory.iml
-vendor/*
