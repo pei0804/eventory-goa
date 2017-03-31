@@ -1,7 +1,7 @@
-hash: b228068e6939ae0343f9ccbb898229a090ab35eb1f91eff59569ad93284e1198
-updated: 2017-03-31T17:25:04.170571655+09:00
+hash: c2acfee42bd7523fc7579dd6bd34908a061501ed2ab834973b782ff221d7172b
+updated: 2017-03-31T21:04:33.76993479+09:00
 imports:
-- name: github.com/tikasan/go-metrics
+- name: github.com/armon/go-metrics
   version: 93f237eba9b0602f3e73710416558854a81d9337
 - name: github.com/dimfeld/httppath
   version: c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc
@@ -30,8 +30,6 @@ imports:
   version: 7be4beda01ec05d0b93d80b3facd2b6f44080d94
 - name: github.com/spf13/pflag
   version: d16db1e50e33dff1b6cdf37596cef36742128670
-- name: github.com/tikasan/go-metrics
-  version: d18a82e136b6779d476ac03c4a38d7998419a170
 - name: github.com/zach-klippenstein/goregen
   version: 795b5e3961ea1912fde60af417ad85e86acc0d6a
 - name: golang.org/x/net
