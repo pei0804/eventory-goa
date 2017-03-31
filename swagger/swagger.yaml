@@ -758,8 +758,6 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "401":
-          description: Unauthorized
       schemes:
       - http
       summary: tmp account create users

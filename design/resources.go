@@ -125,7 +125,6 @@ var _ = Resource("users", func() {
 		Description("一時ユーザーの作成")
 		NoSecurity()
 		Response(OK, Token)
-		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
 	Action("account create", func() {
