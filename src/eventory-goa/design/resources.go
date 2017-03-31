@@ -1,95 +1,168 @@
 package design
 
 import (
+	"github.com/goadesign/goa"
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
 var _ = Resource("event", func() {
-	BasePath("/event")
-	DefaultMedia(Event)
+	BasePath("/events")
 	Action("list", func() {
 		Routing(
-			// TODO: エンドポイント変える可能生あり
-			GET("/"),
+			GET("/new"),
+			GET("/keep"),
+			GET("/nokeep"),
 		)
-		Description("イベント情報取得(クライントはこの処理の実行した時間を保持する)")
+		Description("イベント情報取得")
 		Params(func() {
-			Param("updated_at", String, "クライアントが最後にイベントを取得した時間(格納していない場合は空文字で処理します)", func() {
+			Param("q", String, "キーワード検索", func() {
 				Default("")
+			})
+			Param("sort", String, "ソート", func() {
+				Default("")
+			})
+			Param("page", Integer, func() {
+				Minimum(0)
 			})
 		})
 		Response(OK, CollectionOf(Event))
+		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
 })
 
 var _ = Resource("genre", func() {
-	BasePath("/genre")
-	DefaultMedia(Genre)
+	BasePath("/genres")
+	Security(UserAuth)
 	Action("create", func() {
 		Routing(
 			POST("/new"),
 		)
 		Description("ジャンルの新規作成")
 		Params(func() {
-			Param("name", String, "ジャンル名(1~30文字)", func() {
+			Param("name", String, "ジャンル名", func() {
 				MinLength(1)
 				MaxLength(30)
 			})
 			Required("name")
 		})
-		Response(Created)
+		Response(OK)
+		Response(OK, Genre)
+		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
 	Action("list", func() {
 		Routing(
 			GET("/"),
 		)
-		Description("all genre get")
+		Description("ジャンル取得")
 		Params(func() {
-			Param("keyword", String, "ジャンル名検索に使うキーワード(0~30文字)", func() {
+			Param("q", String, "ジャンル名検索に使うキーワード", func() {
 				MinLength(0)
 				MaxLength(30)
 				Default("")
 			})
 		})
 		Response(OK, CollectionOf(Genre))
+		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
 })
 
 var _ = Resource("user", func() {
-	BasePath("/user")
-	Action("event fav update", func() {
+	BasePath("/users")
+	Security(UserAuth)
+	Action("tmp account create", func() {
 		Routing(
-			PUT("/:eventID/keep"),
-			PUT("/:eventID/nokeep"),
+			POST("/tmp"),
 		)
 		Params(func() {
-			Param("eventID", Integer, "イベントID（連番）")
-			Param("userID", Integer, "ユーザーID（連番）")
-			Required("eventID", "userID")
+			Param("client_version", String, "アプリのバージョン", func() {
+				MinLength(1)
+				MaxLength(10)
+			})
+			Param("platform", String, "OSとバージョン", func() {
+				Enum("ios", "android")
+			})
+			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
+				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
+			})
 		})
-		Description("イベントのお気に入り操作")
-		Response(NoContent)
-		Response(NotFound)
+		Description("一時ユーザーの作成")
+		NoSecurity()
+		Response(OK, Token)
+		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
-
-	Action("genre fav update", func() {
+	Action("account create", func() {
 		Routing(
-			PUT("/:genreID/add"),
-			PUT("/:genreID/remove"),
+			POST("/new"),
 		)
 		Params(func() {
-			Param("genreID", Integer, "genreID（連番）")
-			Param("userID", Integer, "ユーザーID（連番）")
+			Param("email", String, "メールアドレス", func() {
+				Format(goa.FormatEmail)
+			})
+			Param("client_version", String, "アプリのバージョン", func() {
+				MinLength(1)
+				MaxLength(10)
+			})
+			Param("platform", String, "OSとバージョン", func() {
+				Enum("ios", "android")
+			})
+			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
+				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
+			})
+		})
+		Description("正規ユーザーの作成")
+		Response(OK)
+		Response(OK, Token)
+		Response(Unauthorized)
+		Response(BadRequest, ErrorMedia)
+	})
+	Action("keep event", func() {
+		Routing(
+			PUT("/:eventID/keep"),
+		)
+		Params(func() {
+			Param("eventID", Integer, "イベントID")
+			Param("isKeep", Boolean, "キープ操作")
+			Required("eventID", "userID", "isKeep")
+		})
+		Description("イベントのお気に入り操作")
+		Response(OK)
+		Response(NotFound)
+		Response(Unauthorized)
+		Response(BadRequest, ErrorMedia)
+	})
+	Action("follow genre", func() {
+		Routing(
+			PUT("/:genreID/follow"),
+			DELETE("/:genreID/follow"),
+		)
+		Params(func() {
+			Param("genreID", Integer, "ジャンルID")
 			Required("genreID", "userID")
 		})
 		Description("ジャンルお気に入り操作")
-		Response(NoContent)
+		Response(OK)
 		Response(NotFound)
+		Response(Unauthorized)
+		Response(BadRequest, ErrorMedia)
+	})
+	Action("pref follow", func() {
+		Routing(
+			PUT("/:prefID/follow"),
+			DELETE("/:prefID/follow"),
+		)
+		Params(func() {
+			Param("prefID", Integer, "都道府県ID")
+			Required("prefID", "userID")
+		})
+		Description("ジャンルお気に入り操作")
+		Response(OK)
+		Response(NotFound)
+		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})
 })
