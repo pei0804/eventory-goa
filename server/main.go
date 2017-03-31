@@ -4,6 +4,8 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/tikasan/eventory-goa/app"
@@ -33,8 +35,6 @@ func init() {
 	c4 := controller.NewUsersController(service)
 	app.MountUsersController(service, c4)
 
-	// Start service
-	if err := service.ListenAndServe(":8080"); err != nil {
-		service.LogError("startup", "err", err)
-	}
+	// Setup HTTP handler
+	http.HandleFunc("/", service.Mux.ServeHTTP)
 }
