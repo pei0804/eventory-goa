@@ -12,10 +12,10 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("ID", Integer, "ID", func() {
 			Example(1)
 		})
-		Attribute("eventID", String, "イベントID", func() {
+		Attribute("identifier", String, "識別子(api-event_id)", func() {
 			Example("3-12313")
 		})
-		Attribute("apiID", String, "APIの種類 enum(ATDN=1,CONNPASS=2,DOORKEEPER=3)", func() {
+		Attribute("apiType", String, "APIの種類 enum('atdn','connpass','doorkeeper')", func() {
 			Example("ATDN")
 		})
 		Attribute("title", String, "イベント名", func() {
@@ -24,16 +24,16 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("url", String, "イベントページURL", func() {
 			Example("2016-01-01 10:10:12")
 		})
-		Attribute("limit", Integer, "参加人数上限", func() {
+		Attribute("limits", Integer, "参加人数上限", func() {
 			Example(10)
 		})
-		Attribute("accepted", Integer, "参加登録済み人数", func() {
+		Attribute("accepte", Integer, "参加登録済み人数", func() {
 			Example(10)
 		})
-		Attribute("waitlisted", Integer, "キャンセル待ち人数", func() {
+		Attribute("wait", Integer, "キャンセル待ち人数", func() {
 			Example(5)
 		})
-		Attribute("place", String, "開催地", func() {
+		Attribute("address", String, "住所", func() {
 			Example("東京都渋谷区3-31-205")
 		})
 		Attribute("startAt", String, "開催日時", func() {
@@ -43,16 +43,17 @@ var Event = MediaType("application/vnd.event+json", func() {
 			Example("2016-01-01 18:00:00")
 		})
 	})
-	Required("ID", "apiID", "title", "url", "limit", "accepted", "waitlisted", "place", "startAt")
+	Required("ID", "identifier", "apiType", "title", "url", "limits", "accepte", "wait", "address", "startAt", "endAt")
 	View("default", func() {
 		Attribute("ID")
-		Attribute("apiID")
+		Attribute("identifier")
+		Attribute("apiType")
 		Attribute("title")
 		Attribute("url")
-		Attribute("limit")
-		Attribute("accepted")
-		Attribute("waitlisted")
-		Attribute("place")
+		Attribute("limits")
+		Attribute("accepte")
+		Attribute("wait")
+		Attribute("address")
 		Attribute("startAt")
 		Attribute("endAt")
 	})
@@ -71,5 +72,17 @@ var Genre = MediaType("application/vnd.genre+json", func() {
 	View("default", func() {
 		Attribute("ID")
 		Attribute("name")
+	})
+})
+
+var Token = MediaType("application/vnd.token+json", func() {
+	Description("ユーザー情報")
+	Attributes(func() {
+		Attribute("token", String, "トークン", func() {
+			Example("az31e85g219491271529068e996f763d2924fbfw947211ffa8c4daafa5ce23b5")
+		})
+	})
+	View("default", func() {
+		Attribute("token")
 	})
 })
