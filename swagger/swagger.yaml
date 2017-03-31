@@ -680,30 +680,25 @@ paths:
       parameters:
       - description: アプリのバージョン
         in: query
-        maxLength: 10
-        minLength: 1
         name: client_version
-        required: false
+        required: true
         type: string
       - description: メールアドレス
         format: email
         in: query
         name: email
-        required: false
+        required: true
         type: string
       - description: 識別子(android:Android_ID, ios:IDFV)
         in: query
         name: identifier
         pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)
-        required: false
+        required: true
         type: string
       - description: OSとバージョン
-        enum:
-        - ios
-        - android
         in: query
         name: platform
-        required: false
+        required: true
         type: string
       responses:
         "200":
@@ -730,24 +725,19 @@ paths:
       parameters:
       - description: アプリのバージョン
         in: query
-        maxLength: 10
-        minLength: 1
         name: client_version
-        required: false
+        required: true
         type: string
       - description: 識別子(android:Android_ID, ios:IDFV)
         in: query
         name: identifier
         pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)
-        required: false
+        required: true
         type: string
       - description: OSとバージョン
-        enum:
-        - ios
-        - android
         in: query
         name: platform
-        required: false
+        required: true
         type: string
       responses:
         "200":

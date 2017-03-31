@@ -371,10 +371,10 @@ type AccountCreateUsersContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	ClientVersion *string
-	Email         *string
-	Identifier    *string
-	Platform      *string
+	ClientVersion string
+	Email         string
+	Identifier    string
+	Platform      string
 }
 
 // NewAccountCreateUsersContext parses the incoming request URL and body, performs validations and creates the
@@ -386,49 +386,38 @@ func NewAccountCreateUsersContext(ctx context.Context, service *goa.Service) (*A
 	req := goa.ContextRequest(ctx)
 	rctx := AccountCreateUsersContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramClientVersion := req.Params["client_version"]
-	if len(paramClientVersion) > 0 {
+	if len(paramClientVersion) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("client_version"))
+	} else {
 		rawClientVersion := paramClientVersion[0]
-		rctx.ClientVersion = &rawClientVersion
-		if rctx.ClientVersion != nil {
-			if utf8.RuneCountInString(*rctx.ClientVersion) < 1 {
-				err = goa.MergeErrors(err, goa.InvalidLengthError(`client_version`, *rctx.ClientVersion, utf8.RuneCountInString(*rctx.ClientVersion), 1, true))
-			}
-		}
-		if rctx.ClientVersion != nil {
-			if utf8.RuneCountInString(*rctx.ClientVersion) > 10 {
-				err = goa.MergeErrors(err, goa.InvalidLengthError(`client_version`, *rctx.ClientVersion, utf8.RuneCountInString(*rctx.ClientVersion), 10, false))
-			}
-		}
+		rctx.ClientVersion = rawClientVersion
 	}
 	paramEmail := req.Params["email"]
-	if len(paramEmail) > 0 {
+	if len(paramEmail) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("email"))
+	} else {
 		rawEmail := paramEmail[0]
-		rctx.Email = &rawEmail
-		if rctx.Email != nil {
-			if err2 := goa.ValidateFormat(goa.FormatEmail, *rctx.Email); err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFormatError(`email`, *rctx.Email, goa.FormatEmail, err2))
-			}
+		rctx.Email = rawEmail
+		if err2 := goa.ValidateFormat(goa.FormatEmail, rctx.Email); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`email`, rctx.Email, goa.FormatEmail, err2))
 		}
 	}
 	paramIdentifier := req.Params["identifier"]
-	if len(paramIdentifier) > 0 {
+	if len(paramIdentifier) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("identifier"))
+	} else {
 		rawIdentifier := paramIdentifier[0]
-		rctx.Identifier = &rawIdentifier
-		if rctx.Identifier != nil {
-			if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, *rctx.Identifier); !ok {
-				err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, *rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
-			}
+		rctx.Identifier = rawIdentifier
+		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, rctx.Identifier); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
 		}
 	}
 	paramPlatform := req.Params["platform"]
-	if len(paramPlatform) > 0 {
+	if len(paramPlatform) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("platform"))
+	} else {
 		rawPlatform := paramPlatform[0]
-		rctx.Platform = &rawPlatform
-		if rctx.Platform != nil {
-			if !(*rctx.Platform == "ios" || *rctx.Platform == "android") {
-				err = goa.MergeErrors(err, goa.InvalidEnumValueError(`platform`, *rctx.Platform, []interface{}{"ios", "android"}))
-			}
-		}
+		rctx.Platform = rawPlatform
 	}
 	return &rctx, err
 }
@@ -456,9 +445,9 @@ type TmpAccountCreateUsersContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	ClientVersion *string
-	Identifier    *string
-	Platform      *string
+	ClientVersion string
+	Identifier    string
+	Platform      string
 }
 
 // NewTmpAccountCreateUsersContext parses the incoming request URL and body, performs validations and creates the
@@ -470,39 +459,28 @@ func NewTmpAccountCreateUsersContext(ctx context.Context, service *goa.Service) 
 	req := goa.ContextRequest(ctx)
 	rctx := TmpAccountCreateUsersContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramClientVersion := req.Params["client_version"]
-	if len(paramClientVersion) > 0 {
+	if len(paramClientVersion) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("client_version"))
+	} else {
 		rawClientVersion := paramClientVersion[0]
-		rctx.ClientVersion = &rawClientVersion
-		if rctx.ClientVersion != nil {
-			if utf8.RuneCountInString(*rctx.ClientVersion) < 1 {
-				err = goa.MergeErrors(err, goa.InvalidLengthError(`client_version`, *rctx.ClientVersion, utf8.RuneCountInString(*rctx.ClientVersion), 1, true))
-			}
-		}
-		if rctx.ClientVersion != nil {
-			if utf8.RuneCountInString(*rctx.ClientVersion) > 10 {
-				err = goa.MergeErrors(err, goa.InvalidLengthError(`client_version`, *rctx.ClientVersion, utf8.RuneCountInString(*rctx.ClientVersion), 10, false))
-			}
-		}
+		rctx.ClientVersion = rawClientVersion
 	}
 	paramIdentifier := req.Params["identifier"]
-	if len(paramIdentifier) > 0 {
+	if len(paramIdentifier) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("identifier"))
+	} else {
 		rawIdentifier := paramIdentifier[0]
-		rctx.Identifier = &rawIdentifier
-		if rctx.Identifier != nil {
-			if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, *rctx.Identifier); !ok {
-				err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, *rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
-			}
+		rctx.Identifier = rawIdentifier
+		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, rctx.Identifier); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
 		}
 	}
 	paramPlatform := req.Params["platform"]
-	if len(paramPlatform) > 0 {
+	if len(paramPlatform) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("platform"))
+	} else {
 		rawPlatform := paramPlatform[0]
-		rctx.Platform = &rawPlatform
-		if rctx.Platform != nil {
-			if !(*rctx.Platform == "ios" || *rctx.Platform == "android") {
-				err = goa.MergeErrors(err, goa.InvalidEnumValueError(`platform`, *rctx.Platform, []interface{}{"ios", "android"}))
-			}
-		}
+		rctx.Platform = rawPlatform
 	}
 	return &rctx, err
 }

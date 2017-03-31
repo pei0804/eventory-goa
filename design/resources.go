@@ -29,6 +29,7 @@ var _ = Resource("events", func() {
 			Param("page", Integer, "ページ(1->2->3->4)", func() {
 				Minimum(0)
 			})
+
 		})
 		Response(OK, CollectionOf(Event))
 		Response(Unauthorized)
@@ -41,7 +42,7 @@ var _ = Resource("events", func() {
 		Params(func() {
 			Param("eventID", Integer, "イベントID")
 			Param("isKeep", Boolean, "キープ操作")
-			Required("eventID", "userID", "isKeep")
+			Required("eventID", "isKeep")
 		})
 		Description("イベントのお気に入り操作")
 		Response(OK)
@@ -93,7 +94,7 @@ var _ = Resource("genres", func() {
 		)
 		Params(func() {
 			Param("genreID", Integer, "ジャンルID")
-			Required("genreID", "userID")
+			Required("genreID")
 		})
 		Description("ジャンルお気に入り操作")
 		Response(OK)
@@ -111,16 +112,12 @@ var _ = Resource("users", func() {
 			POST("/tmp"),
 		)
 		Params(func() {
-			Param("client_version", String, "アプリのバージョン", func() {
-				MinLength(1)
-				MaxLength(10)
-			})
-			Param("platform", String, "OSとバージョン", func() {
-				Enum("ios", "android")
-			})
+			Param("client_version", String, "アプリのバージョン")
+			Param("platform", String, "OSとバージョン")
 			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
 				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
 			})
+			Required("client_version", "platform", "identifier")
 		})
 		Description("一時ユーザーの作成")
 		NoSecurity()
@@ -135,16 +132,12 @@ var _ = Resource("users", func() {
 			Param("email", String, "メールアドレス", func() {
 				Format(goa.FormatEmail)
 			})
-			Param("client_version", String, "アプリのバージョン", func() {
-				MinLength(1)
-				MaxLength(10)
-			})
-			Param("platform", String, "OSとバージョン", func() {
-				Enum("ios", "android")
-			})
+			Param("client_version", String, "アプリのバージョン")
+			Param("platform", String, "OSとバージョン")
 			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
 				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
 			})
+			Required("email", "client_version", "platform", "identifier")
 		})
 		Description("正規ユーザーの作成")
 		Response(OK, Token)
@@ -163,7 +156,7 @@ var _ = Resource("prefs", func() {
 		)
 		Params(func() {
 			Param("prefID", Integer, "都道府県ID")
-			Required("prefID", "userID")
+			Required("prefID")
 		})
 		Description("ジャンルお気に入り操作")
 		Response(OK)

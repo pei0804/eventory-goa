@@ -13,7 +13,7 @@ func AccountCreateUsersPath() string {
 }
 
 // 正規ユーザーの作成
-func (c *Client) AccountCreateUsers(ctx context.Context, path string, clientVersion *string, email *string, identifier *string, platform *string) (*http.Response, error) {
+func (c *Client) AccountCreateUsers(ctx context.Context, path string, clientVersion string, email string, identifier string, platform string) (*http.Response, error) {
 	req, err := c.NewAccountCreateUsersRequest(ctx, path, clientVersion, email, identifier, platform)
 	if err != nil {
 		return nil, err
@@ -22,25 +22,17 @@ func (c *Client) AccountCreateUsers(ctx context.Context, path string, clientVers
 }
 
 // NewAccountCreateUsersRequest create the request corresponding to the account create action endpoint of the users resource.
-func (c *Client) NewAccountCreateUsersRequest(ctx context.Context, path string, clientVersion *string, email *string, identifier *string, platform *string) (*http.Request, error) {
+func (c *Client) NewAccountCreateUsersRequest(ctx context.Context, path string, clientVersion string, email string, identifier string, platform string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
-	if clientVersion != nil {
-		values.Set("client_version", *clientVersion)
-	}
-	if email != nil {
-		values.Set("email", *email)
-	}
-	if identifier != nil {
-		values.Set("identifier", *identifier)
-	}
-	if platform != nil {
-		values.Set("platform", *platform)
-	}
+	values.Set("client_version", clientVersion)
+	values.Set("email", email)
+	values.Set("identifier", identifier)
+	values.Set("platform", platform)
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
@@ -58,7 +50,7 @@ func TmpAccountCreateUsersPath() string {
 }
 
 // 一時ユーザーの作成
-func (c *Client) TmpAccountCreateUsers(ctx context.Context, path string, clientVersion *string, identifier *string, platform *string) (*http.Response, error) {
+func (c *Client) TmpAccountCreateUsers(ctx context.Context, path string, clientVersion string, identifier string, platform string) (*http.Response, error) {
 	req, err := c.NewTmpAccountCreateUsersRequest(ctx, path, clientVersion, identifier, platform)
 	if err != nil {
 		return nil, err
@@ -67,22 +59,16 @@ func (c *Client) TmpAccountCreateUsers(ctx context.Context, path string, clientV
 }
 
 // NewTmpAccountCreateUsersRequest create the request corresponding to the tmp account create action endpoint of the users resource.
-func (c *Client) NewTmpAccountCreateUsersRequest(ctx context.Context, path string, clientVersion *string, identifier *string, platform *string) (*http.Request, error) {
+func (c *Client) NewTmpAccountCreateUsersRequest(ctx context.Context, path string, clientVersion string, identifier string, platform string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
-	if clientVersion != nil {
-		values.Set("client_version", *clientVersion)
-	}
-	if identifier != nil {
-		values.Set("identifier", *identifier)
-	}
-	if platform != nil {
-		values.Set("platform", *platform)
-	}
+	values.Set("client_version", clientVersion)
+	values.Set("identifier", identifier)
+	values.Set("platform", platform)
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {

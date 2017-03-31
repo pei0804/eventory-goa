@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/goadesign/goa"
 	"github.com/tikasan/eventory-goa/app"
+	"github.com/goadesign/goa"
 )
 
 // PrefsController implements the prefs resource.

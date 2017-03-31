@@ -539,7 +539,7 @@ func (cmd *AccountCreateUsersCommand) Run(c *client.Client, args []string) error
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.AccountCreateUsers(ctx, path, stringFlagVal("client_version", cmd.ClientVersion), stringFlagVal("email", cmd.Email), stringFlagVal("identifier", cmd.Identifier), stringFlagVal("platform", cmd.Platform))
+	resp, err := c.AccountCreateUsers(ctx, path, cmd.ClientVersion, cmd.Email, cmd.Identifier, cmd.Platform)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -571,7 +571,7 @@ func (cmd *TmpAccountCreateUsersCommand) Run(c *client.Client, args []string) er
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.TmpAccountCreateUsers(ctx, path, stringFlagVal("client_version", cmd.ClientVersion), stringFlagVal("identifier", cmd.Identifier), stringFlagVal("platform", cmd.Platform))
+	resp, err := c.TmpAccountCreateUsers(ctx, path, cmd.ClientVersion, cmd.Identifier, cmd.Platform)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err

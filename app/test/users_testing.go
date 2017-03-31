@@ -28,7 +28,7 @@ import (
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func AccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion *string, email *string, identifier *string, platform *string) (http.ResponseWriter, error) {
+func AccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion string, email string, identifier string, platform string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -49,20 +49,20 @@ func AccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, ser
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		query["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		query["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		query["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		query["platform"] = sliceVal
 	}
 	u := &url.URL{
@@ -74,20 +74,20 @@ func AccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, ser
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		prms["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		prms["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		prms["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		prms["platform"] = sliceVal
 	}
 	if ctx == nil {
@@ -126,7 +126,7 @@ func AccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, ser
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func AccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion *string, email *string, identifier *string, platform *string) (http.ResponseWriter, *app.Token) {
+func AccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion string, email string, identifier string, platform string) (http.ResponseWriter, *app.Token) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -147,20 +147,20 @@ func AccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *go
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		query["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		query["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		query["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		query["platform"] = sliceVal
 	}
 	u := &url.URL{
@@ -172,20 +172,20 @@ func AccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *go
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		prms["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		prms["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		prms["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		prms["platform"] = sliceVal
 	}
 	if ctx == nil {
@@ -224,7 +224,7 @@ func AccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func AccountCreateUsersUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion *string, email *string, identifier *string, platform *string) http.ResponseWriter {
+func AccountCreateUsersUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion string, email string, identifier string, platform string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -245,20 +245,20 @@ func AccountCreateUsersUnauthorized(t goatest.TInterface, ctx context.Context, s
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		query["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		query["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		query["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		query["platform"] = sliceVal
 	}
 	u := &url.URL{
@@ -270,20 +270,20 @@ func AccountCreateUsersUnauthorized(t goatest.TInterface, ctx context.Context, s
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		prms["client_version"] = sliceVal
 	}
-	if email != nil {
-		sliceVal := []string{*email}
+	{
+		sliceVal := []string{email}
 		prms["email"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		prms["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		prms["platform"] = sliceVal
 	}
 	if ctx == nil {
@@ -314,7 +314,7 @@ func AccountCreateUsersUnauthorized(t goatest.TInterface, ctx context.Context, s
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func TmpAccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion *string, identifier *string, platform *string) (http.ResponseWriter, error) {
+func TmpAccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion string, identifier string, platform string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -335,16 +335,16 @@ func TmpAccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		query["client_version"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		query["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		query["platform"] = sliceVal
 	}
 	u := &url.URL{
@@ -356,16 +356,16 @@ func TmpAccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		prms["client_version"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		prms["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		prms["platform"] = sliceVal
 	}
 	if ctx == nil {
@@ -404,7 +404,7 @@ func TmpAccountCreateUsersBadRequest(t goatest.TInterface, ctx context.Context, 
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func TmpAccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion *string, identifier *string, platform *string) (http.ResponseWriter, *app.Token) {
+func TmpAccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.UsersController, clientVersion string, identifier string, platform string) (http.ResponseWriter, *app.Token) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -425,16 +425,16 @@ func TmpAccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		query["client_version"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		query["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		query["platform"] = sliceVal
 	}
 	u := &url.URL{
@@ -446,16 +446,16 @@ func TmpAccountCreateUsersOK(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if clientVersion != nil {
-		sliceVal := []string{*clientVersion}
+	{
+		sliceVal := []string{clientVersion}
 		prms["client_version"] = sliceVal
 	}
-	if identifier != nil {
-		sliceVal := []string{*identifier}
+	{
+		sliceVal := []string{identifier}
 		prms["identifier"] = sliceVal
 	}
-	if platform != nil {
-		sliceVal := []string{*platform}
+	{
+		sliceVal := []string{platform}
 		prms["platform"] = sliceVal
 	}
 	if ctx == nil {

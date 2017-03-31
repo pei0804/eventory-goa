@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/tikasan/eventory-goa/app"
 	"github.com/goadesign/goa"
+	"github.com/tikasan/eventory-goa/app"
 )
 
 // EventsController implements the events resource.
