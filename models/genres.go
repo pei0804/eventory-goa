@@ -19,45 +19,47 @@ import (
 )
 
 // ジャンル
-type genres struct {
-	ID        int `gorm:"primary_key"` // primary key
-	Keyword   string
-	Name      string
-	CreatedAt time.Time  // timestamp
-	DeletedAt *time.Time // nullable timestamp (soft delete)
-	UpdatedAt time.Time  // timestamp
+type Genres struct {
+	ID               int           `gorm:"primary_key"` // primary key
+	EventGenres      []EventGenres // has many EventGenres
+	Keyword          string
+	Name             string
+	UserFollowGenres []UserFollowGenres // has many UserFollowGenres
+	CreatedAt        time.Time          // timestamp
+	DeletedAt        *time.Time         // nullable timestamp (soft delete)
+	UpdatedAt        time.Time          // timestamp
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m genres) TableName() string {
+func (m Genres) TableName() string {
 	return "genres"
 
 }
 
-// genresDB is the implementation of the storage interface for
-// genres.
-type genresDB struct {
+// GenresDB is the implementation of the storage interface for
+// Genres.
+type GenresDB struct {
 	Db *gorm.DB
 }
 
-// NewgenresDB creates a new storage type.
-func NewgenresDB(db *gorm.DB) *genresDB {
-	return &genresDB{Db: db}
+// NewGenresDB creates a new storage type.
+func NewGenresDB(db *gorm.DB) *GenresDB {
+	return &GenresDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *genresDB) DB() interface{} {
+func (m *GenresDB) DB() interface{} {
 	return m.Db
 }
 
-// genresStorage represents the storage interface.
-type genresStorage interface {
+// GenresStorage represents the storage interface.
+type GenresStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*genres, error)
-	Get(ctx context.Context, id int) (*genres, error)
-	Add(ctx context.Context, genres *genres) error
-	Update(ctx context.Context, genres *genres) error
+	List(ctx context.Context) ([]*Genres, error)
+	Get(ctx context.Context, id int) (*Genres, error)
+	Add(ctx context.Context, genres *Genres) error
+	Update(ctx context.Context, genres *Genres) error
 	Delete(ctx context.Context, id int) error
 
 	ListGenre(ctx context.Context) []*app.Genre
@@ -66,19 +68,19 @@ type genresStorage interface {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *genresDB) TableName() string {
+func (m *GenresDB) TableName() string {
 	return "genres"
 
 }
 
 // CRUD Functions
 
-// Get returns a single genres as a Database Model
+// Get returns a single Genres as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *genresDB) Get(ctx context.Context, id int) (*genres, error) {
+func (m *GenresDB) Get(ctx context.Context, id int) (*Genres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "genres", "get"}, time.Now())
 
-	var native genres
+	var native Genres
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -87,11 +89,11 @@ func (m *genresDB) Get(ctx context.Context, id int) (*genres, error) {
 	return &native, err
 }
 
-// List returns an array of genres
-func (m *genresDB) List(ctx context.Context) ([]*genres, error) {
+// List returns an array of Genres
+func (m *GenresDB) List(ctx context.Context) ([]*Genres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "genres", "list"}, time.Now())
 
-	var objs []*genres
+	var objs []*Genres
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -101,12 +103,12 @@ func (m *genresDB) List(ctx context.Context) ([]*genres, error) {
 }
 
 // Add creates a new record.
-func (m *genresDB) Add(ctx context.Context, model *genres) error {
+func (m *GenresDB) Add(ctx context.Context, model *Genres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "genres", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding genres", "error", err.Error())
+		goa.LogError(ctx, "error adding Genres", "error", err.Error())
 		return err
 	}
 
@@ -114,12 +116,12 @@ func (m *genresDB) Add(ctx context.Context, model *genres) error {
 }
 
 // Update modifies a single record.
-func (m *genresDB) Update(ctx context.Context, model *genres) error {
+func (m *GenresDB) Update(ctx context.Context, model *Genres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "genres", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating genres", "error", err.Error())
+		goa.LogError(ctx, "error updating Genres", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -128,15 +130,15 @@ func (m *genresDB) Update(ctx context.Context, model *genres) error {
 }
 
 // Delete removes a single record.
-func (m *genresDB) Delete(ctx context.Context, id int) error {
+func (m *GenresDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "genres", "delete"}, time.Now())
 
-	var obj genres
+	var obj Genres
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting genres", "error", err.Error())
+		goa.LogError(ctx, "error deleting Genres", "error", err.Error())
 		return err
 	}
 

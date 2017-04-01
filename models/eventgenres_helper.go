@@ -21,7 +21,7 @@ import (
 // MediaType Retrieval Functions
 
 // ListEvent returns an array of view: default.
-func (m *event_genresDB) ListEvent(ctx context.Context) []*app.Event {
+func (m *EventGenresDB) ListEvent(ctx context.Context) []*app.Event {
 	defer goa.MeasureSince([]string{"goa", "db", "event", "listevent"}, time.Now())
 
 	var native []*EventGenres
@@ -29,36 +29,36 @@ func (m *event_genresDB) ListEvent(ctx context.Context) []*app.Event {
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error listing event_genres", "error", err.Error())
+		goa.LogError(ctx, "error listing EventGenres", "error", err.Error())
 		return objs
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.event_genresToEvent())
+		objs = append(objs, t.EventGenresToEvent())
 	}
 
 	return objs
 }
 
-// event_genresToEvent loads a event_genres and builds the default view of media type Event.
-func (m *event_genres) event_genresToEvent() *app.Event {
-	eventGenres := &app.Event{}
+// EventGenresToEvent loads a EventGenres and builds the default view of media type Event.
+func (m *EventGenres) EventGenresToEvent() *app.Event {
+	eventgenres := &app.Event{}
 
-	return eventGenres
+	return eventgenres
 }
 
-// OneEvent loads a event_genres and builds the default view of media type Event.
-func (m *event_genresDB) OneEvent(ctx context.Context, id int) (*app.Event, error) {
+// OneEvent loads a EventGenres and builds the default view of media type Event.
+func (m *EventGenresDB) OneEvent(ctx context.Context, id int) (*app.Event, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "event", "oneevent"}, time.Now())
 
-	var native event_genres
+	var native EventGenres
 	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		goa.LogError(ctx, "error getting event_genres", "error", err.Error())
+		goa.LogError(ctx, "error getting EventGenres", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.event_genresToEvent()
+	view := *native.EventGenresToEvent()
 	return &view, err
 }

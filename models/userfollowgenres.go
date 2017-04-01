@@ -18,10 +18,10 @@ import (
 )
 
 // ユーザーのフォロージャンル
-type user_follow_genres struct {
-	ID        int `gorm:"primary_key"` // primary key
-	GenreID   int
-	UserID    int
+type UserFollowGenres struct {
+	ID        int        `gorm:"primary_key"` // primary key
+	GenreID   int        // has many UserFollowGenres
+	UserID    int        // has many UserFollowGenres
 	CreatedAt time.Time  // timestamp
 	DeletedAt *time.Time // nullable timestamp (soft delete)
 	UpdatedAt time.Time  // timestamp
@@ -29,52 +29,52 @@ type user_follow_genres struct {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m user_follow_genres) TableName() string {
+func (m UserFollowGenres) TableName() string {
 	return "user_follow_genres"
 
 }
 
-// user_follow_genresDB is the implementation of the storage interface for
-// user_follow_genres.
-type user_follow_genresDB struct {
+// UserFollowGenresDB is the implementation of the storage interface for
+// UserFollowGenres.
+type UserFollowGenresDB struct {
 	Db *gorm.DB
 }
 
-// Newuser_follow_genresDB creates a new storage type.
-func Newuser_follow_genresDB(db *gorm.DB) *user_follow_genresDB {
-	return &user_follow_genresDB{Db: db}
+// NewUserFollowGenresDB creates a new storage type.
+func NewUserFollowGenresDB(db *gorm.DB) *UserFollowGenresDB {
+	return &UserFollowGenresDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *user_follow_genresDB) DB() interface{} {
+func (m *UserFollowGenresDB) DB() interface{} {
 	return m.Db
 }
 
-// user_follow_genresStorage represents the storage interface.
-type user_follow_genresStorage interface {
+// UserFollowGenresStorage represents the storage interface.
+type UserFollowGenresStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*user_follow_genres, error)
-	Get(ctx context.Context, id int) (*user_follow_genres, error)
-	Add(ctx context.Context, userFollowGenres *user_follow_genres) error
-	Update(ctx context.Context, userFollowGenres *user_follow_genres) error
+	List(ctx context.Context) ([]*UserFollowGenres, error)
+	Get(ctx context.Context, id int) (*UserFollowGenres, error)
+	Add(ctx context.Context, userfollowgenres *UserFollowGenres) error
+	Update(ctx context.Context, userfollowgenres *UserFollowGenres) error
 	Delete(ctx context.Context, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *user_follow_genresDB) TableName() string {
+func (m *UserFollowGenresDB) TableName() string {
 	return "user_follow_genres"
 
 }
 
 // CRUD Functions
 
-// Get returns a single user_follow_genres as a Database Model
+// Get returns a single UserFollowGenres as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *user_follow_genresDB) Get(ctx context.Context, id int) (*user_follow_genres, error) {
+func (m *UserFollowGenresDB) Get(ctx context.Context, id int) (*UserFollowGenres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowGenres", "get"}, time.Now())
 
-	var native user_follow_genres
+	var native UserFollowGenres
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -83,11 +83,11 @@ func (m *user_follow_genresDB) Get(ctx context.Context, id int) (*user_follow_ge
 	return &native, err
 }
 
-// List returns an array of user_follow_genres
-func (m *user_follow_genresDB) List(ctx context.Context) ([]*user_follow_genres, error) {
+// List returns an array of UserFollowGenres
+func (m *UserFollowGenresDB) List(ctx context.Context) ([]*UserFollowGenres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowGenres", "list"}, time.Now())
 
-	var objs []*user_follow_genres
+	var objs []*UserFollowGenres
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -97,12 +97,12 @@ func (m *user_follow_genresDB) List(ctx context.Context) ([]*user_follow_genres,
 }
 
 // Add creates a new record.
-func (m *user_follow_genresDB) Add(ctx context.Context, model *user_follow_genres) error {
+func (m *UserFollowGenresDB) Add(ctx context.Context, model *UserFollowGenres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowGenres", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding user_follow_genres", "error", err.Error())
+		goa.LogError(ctx, "error adding UserFollowGenres", "error", err.Error())
 		return err
 	}
 
@@ -110,12 +110,12 @@ func (m *user_follow_genresDB) Add(ctx context.Context, model *user_follow_genre
 }
 
 // Update modifies a single record.
-func (m *user_follow_genresDB) Update(ctx context.Context, model *user_follow_genres) error {
+func (m *UserFollowGenresDB) Update(ctx context.Context, model *UserFollowGenres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowGenres", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating user_follow_genres", "error", err.Error())
+		goa.LogError(ctx, "error updating UserFollowGenres", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -124,15 +124,15 @@ func (m *user_follow_genresDB) Update(ctx context.Context, model *user_follow_ge
 }
 
 // Delete removes a single record.
-func (m *user_follow_genresDB) Delete(ctx context.Context, id int) error {
+func (m *UserFollowGenresDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowGenres", "delete"}, time.Now())
 
-	var obj user_follow_genres
+	var obj UserFollowGenres
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting user_follow_genres", "error", err.Error())
+		goa.LogError(ctx, "error deleting UserFollowGenres", "error", err.Error())
 		return err
 	}
 

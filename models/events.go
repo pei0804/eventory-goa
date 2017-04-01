@@ -19,52 +19,55 @@ import (
 )
 
 // イベント
-type events struct {
-	ID         int    `gorm:"primary_key"` // primary key
-	APIType    string `gorm:"column:a_p_i_type"`
-	Accepte    int
-	Address    string
-	Identifier string
-	Limits     int
-	URL        string `gorm:"column:u_r_l"`
-	Wait       int
-	CreatedAt  time.Time  // timestamp
-	DeletedAt  *time.Time // nullable timestamp (soft delete)
-	EndAt      time.Time  // timestamp
-	StartAt    time.Time  // timestamp
-	UpdatedAt  time.Time  // timestamp
+type Events struct {
+	ID             int `gorm:"primary_key"` // primary key
+	APIType        string
+	Accepte        int
+	Address        string
+	EventGenres    []EventGenres // has many EventGenres
+	Identifier     string
+	Limits         int
+	PrefID         int // has many Events
+	URL            string
+	UserKeepStatus []UserKeepStatus // has many UserKeepStatus
+	Wait           int
+	CreatedAt      time.Time  // timestamp
+	DeletedAt      *time.Time // nullable timestamp (soft delete)
+	EndAt          time.Time  // timestamp
+	StartAt        time.Time  // timestamp
+	UpdatedAt      time.Time  // timestamp
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m events) TableName() string {
+func (m Events) TableName() string {
 	return "events"
 
 }
 
-// eventsDB is the implementation of the storage interface for
-// events.
-type eventsDB struct {
+// EventsDB is the implementation of the storage interface for
+// Events.
+type EventsDB struct {
 	Db *gorm.DB
 }
 
-// NeweventsDB creates a new storage type.
-func NeweventsDB(db *gorm.DB) *eventsDB {
-	return &eventsDB{Db: db}
+// NewEventsDB creates a new storage type.
+func NewEventsDB(db *gorm.DB) *EventsDB {
+	return &EventsDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *eventsDB) DB() interface{} {
+func (m *EventsDB) DB() interface{} {
 	return m.Db
 }
 
-// eventsStorage represents the storage interface.
-type eventsStorage interface {
+// EventsStorage represents the storage interface.
+type EventsStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*events, error)
-	Get(ctx context.Context, id int) (*events, error)
-	Add(ctx context.Context, events *events) error
-	Update(ctx context.Context, events *events) error
+	List(ctx context.Context) ([]*Events, error)
+	Get(ctx context.Context, id int) (*Events, error)
+	Add(ctx context.Context, events *Events) error
+	Update(ctx context.Context, events *Events) error
 	Delete(ctx context.Context, id int) error
 
 	ListEvent(ctx context.Context) []*app.Event
@@ -73,19 +76,19 @@ type eventsStorage interface {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *eventsDB) TableName() string {
+func (m *EventsDB) TableName() string {
 	return "events"
 
 }
 
 // CRUD Functions
 
-// Get returns a single events as a Database Model
+// Get returns a single Events as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *eventsDB) Get(ctx context.Context, id int) (*events, error) {
+func (m *EventsDB) Get(ctx context.Context, id int) (*Events, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "events", "get"}, time.Now())
 
-	var native events
+	var native Events
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -94,11 +97,11 @@ func (m *eventsDB) Get(ctx context.Context, id int) (*events, error) {
 	return &native, err
 }
 
-// List returns an array of events
-func (m *eventsDB) List(ctx context.Context) ([]*events, error) {
+// List returns an array of Events
+func (m *EventsDB) List(ctx context.Context) ([]*Events, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "events", "list"}, time.Now())
 
-	var objs []*events
+	var objs []*Events
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -108,12 +111,12 @@ func (m *eventsDB) List(ctx context.Context) ([]*events, error) {
 }
 
 // Add creates a new record.
-func (m *eventsDB) Add(ctx context.Context, model *events) error {
+func (m *EventsDB) Add(ctx context.Context, model *Events) error {
 	defer goa.MeasureSince([]string{"goa", "db", "events", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding events", "error", err.Error())
+		goa.LogError(ctx, "error adding Events", "error", err.Error())
 		return err
 	}
 
@@ -121,12 +124,12 @@ func (m *eventsDB) Add(ctx context.Context, model *events) error {
 }
 
 // Update modifies a single record.
-func (m *eventsDB) Update(ctx context.Context, model *events) error {
+func (m *EventsDB) Update(ctx context.Context, model *Events) error {
 	defer goa.MeasureSince([]string{"goa", "db", "events", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating events", "error", err.Error())
+		goa.LogError(ctx, "error updating Events", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -135,15 +138,15 @@ func (m *eventsDB) Update(ctx context.Context, model *events) error {
 }
 
 // Delete removes a single record.
-func (m *eventsDB) Delete(ctx context.Context, id int) error {
+func (m *EventsDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "events", "delete"}, time.Now())
 
-	var obj events
+	var obj Events
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting events", "error", err.Error())
+		goa.LogError(ctx, "error deleting Events", "error", err.Error())
 		return err
 	}
 

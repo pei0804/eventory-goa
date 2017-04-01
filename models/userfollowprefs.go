@@ -18,10 +18,10 @@ import (
 )
 
 // ユーザーのフォロー都道府県
-type user_follow_prefs struct {
-	ID        int `gorm:"primary_key"` // primary key
-	PrefID    int
-	UserID    int
+type UserFollowPrefs struct {
+	ID        int        `gorm:"primary_key"` // primary key
+	PrefID    int        // has many UserFollowPrefs
+	UserID    int        // has many UserFollowPrefs
 	CreatedAt time.Time  // timestamp
 	DeletedAt *time.Time // nullable timestamp (soft delete)
 	UpdatedAt time.Time  // timestamp
@@ -29,52 +29,52 @@ type user_follow_prefs struct {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m user_follow_prefs) TableName() string {
+func (m UserFollowPrefs) TableName() string {
 	return "user_follow_prefs"
 
 }
 
-// user_follow_prefsDB is the implementation of the storage interface for
-// user_follow_prefs.
-type user_follow_prefsDB struct {
+// UserFollowPrefsDB is the implementation of the storage interface for
+// UserFollowPrefs.
+type UserFollowPrefsDB struct {
 	Db *gorm.DB
 }
 
-// Newuser_follow_prefsDB creates a new storage type.
-func Newuser_follow_prefsDB(db *gorm.DB) *user_follow_prefsDB {
-	return &user_follow_prefsDB{Db: db}
+// NewUserFollowPrefsDB creates a new storage type.
+func NewUserFollowPrefsDB(db *gorm.DB) *UserFollowPrefsDB {
+	return &UserFollowPrefsDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *user_follow_prefsDB) DB() interface{} {
+func (m *UserFollowPrefsDB) DB() interface{} {
 	return m.Db
 }
 
-// user_follow_prefsStorage represents the storage interface.
-type user_follow_prefsStorage interface {
+// UserFollowPrefsStorage represents the storage interface.
+type UserFollowPrefsStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*user_follow_prefs, error)
-	Get(ctx context.Context, id int) (*user_follow_prefs, error)
-	Add(ctx context.Context, userFollowPrefs *user_follow_prefs) error
-	Update(ctx context.Context, userFollowPrefs *user_follow_prefs) error
+	List(ctx context.Context) ([]*UserFollowPrefs, error)
+	Get(ctx context.Context, id int) (*UserFollowPrefs, error)
+	Add(ctx context.Context, userfollowprefs *UserFollowPrefs) error
+	Update(ctx context.Context, userfollowprefs *UserFollowPrefs) error
 	Delete(ctx context.Context, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *user_follow_prefsDB) TableName() string {
+func (m *UserFollowPrefsDB) TableName() string {
 	return "user_follow_prefs"
 
 }
 
 // CRUD Functions
 
-// Get returns a single user_follow_prefs as a Database Model
+// Get returns a single UserFollowPrefs as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *user_follow_prefsDB) Get(ctx context.Context, id int) (*user_follow_prefs, error) {
+func (m *UserFollowPrefsDB) Get(ctx context.Context, id int) (*UserFollowPrefs, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowPrefs", "get"}, time.Now())
 
-	var native user_follow_prefs
+	var native UserFollowPrefs
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -83,11 +83,11 @@ func (m *user_follow_prefsDB) Get(ctx context.Context, id int) (*user_follow_pre
 	return &native, err
 }
 
-// List returns an array of user_follow_prefs
-func (m *user_follow_prefsDB) List(ctx context.Context) ([]*user_follow_prefs, error) {
+// List returns an array of UserFollowPrefs
+func (m *UserFollowPrefsDB) List(ctx context.Context) ([]*UserFollowPrefs, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowPrefs", "list"}, time.Now())
 
-	var objs []*user_follow_prefs
+	var objs []*UserFollowPrefs
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -97,12 +97,12 @@ func (m *user_follow_prefsDB) List(ctx context.Context) ([]*user_follow_prefs, e
 }
 
 // Add creates a new record.
-func (m *user_follow_prefsDB) Add(ctx context.Context, model *user_follow_prefs) error {
+func (m *UserFollowPrefsDB) Add(ctx context.Context, model *UserFollowPrefs) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowPrefs", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding user_follow_prefs", "error", err.Error())
+		goa.LogError(ctx, "error adding UserFollowPrefs", "error", err.Error())
 		return err
 	}
 
@@ -110,12 +110,12 @@ func (m *user_follow_prefsDB) Add(ctx context.Context, model *user_follow_prefs)
 }
 
 // Update modifies a single record.
-func (m *user_follow_prefsDB) Update(ctx context.Context, model *user_follow_prefs) error {
+func (m *UserFollowPrefsDB) Update(ctx context.Context, model *UserFollowPrefs) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowPrefs", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating user_follow_prefs", "error", err.Error())
+		goa.LogError(ctx, "error updating UserFollowPrefs", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -124,15 +124,15 @@ func (m *user_follow_prefsDB) Update(ctx context.Context, model *user_follow_pre
 }
 
 // Delete removes a single record.
-func (m *user_follow_prefsDB) Delete(ctx context.Context, id int) error {
+func (m *UserFollowPrefsDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowPrefs", "delete"}, time.Now())
 
-	var obj user_follow_prefs
+	var obj UserFollowPrefs
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting user_follow_prefs", "error", err.Error())
+		goa.LogError(ctx, "error deleting UserFollowPrefs", "error", err.Error())
 		return err
 	}
 

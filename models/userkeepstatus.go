@@ -18,12 +18,12 @@ import (
 )
 
 // ユーザーのキープ状態
-type user_keep_status struct {
+type UserKeepStatus struct {
 	ID             int `gorm:"primary_key"` // primary key
 	BatchProcessed bool
-	EventID        int
+	EventID        int // has many UserKeepStatus
 	Status         string
-	UserID         int
+	UserID         int        // has many UserKeepStatus
 	CreatedAt      time.Time  // timestamp
 	DeletedAt      *time.Time // nullable timestamp (soft delete)
 	UpdatedAt      time.Time  // timestamp
@@ -31,52 +31,52 @@ type user_keep_status struct {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m user_keep_status) TableName() string {
-	return "user_keep_statuses"
+func (m UserKeepStatus) TableName() string {
+	return "user_keep_status"
 
 }
 
-// user_keep_statusDB is the implementation of the storage interface for
-// user_keep_status.
-type user_keep_statusDB struct {
+// UserKeepStatusDB is the implementation of the storage interface for
+// UserKeepStatus.
+type UserKeepStatusDB struct {
 	Db *gorm.DB
 }
 
-// Newuser_keep_statusDB creates a new storage type.
-func Newuser_keep_statusDB(db *gorm.DB) *user_keep_statusDB {
-	return &user_keep_statusDB{Db: db}
+// NewUserKeepStatusDB creates a new storage type.
+func NewUserKeepStatusDB(db *gorm.DB) *UserKeepStatusDB {
+	return &UserKeepStatusDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *user_keep_statusDB) DB() interface{} {
+func (m *UserKeepStatusDB) DB() interface{} {
 	return m.Db
 }
 
-// user_keep_statusStorage represents the storage interface.
-type user_keep_statusStorage interface {
+// UserKeepStatusStorage represents the storage interface.
+type UserKeepStatusStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*user_keep_status, error)
-	Get(ctx context.Context, id int) (*user_keep_status, error)
-	Add(ctx context.Context, userKeepStatus *user_keep_status) error
-	Update(ctx context.Context, userKeepStatus *user_keep_status) error
+	List(ctx context.Context) ([]*UserKeepStatus, error)
+	Get(ctx context.Context, id int) (*UserKeepStatus, error)
+	Add(ctx context.Context, userkeepstatus *UserKeepStatus) error
+	Update(ctx context.Context, userkeepstatus *UserKeepStatus) error
 	Delete(ctx context.Context, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *user_keep_statusDB) TableName() string {
-	return "user_keep_statuses"
+func (m *UserKeepStatusDB) TableName() string {
+	return "user_keep_status"
 
 }
 
 // CRUD Functions
 
-// Get returns a single user_keep_status as a Database Model
+// Get returns a single UserKeepStatus as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *user_keep_statusDB) Get(ctx context.Context, id int) (*user_keep_status, error) {
+func (m *UserKeepStatusDB) Get(ctx context.Context, id int) (*UserKeepStatus, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userKeepStatus", "get"}, time.Now())
 
-	var native user_keep_status
+	var native UserKeepStatus
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -85,11 +85,11 @@ func (m *user_keep_statusDB) Get(ctx context.Context, id int) (*user_keep_status
 	return &native, err
 }
 
-// List returns an array of user_keep_status
-func (m *user_keep_statusDB) List(ctx context.Context) ([]*user_keep_status, error) {
+// List returns an array of UserKeepStatus
+func (m *UserKeepStatusDB) List(ctx context.Context) ([]*UserKeepStatus, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userKeepStatus", "list"}, time.Now())
 
-	var objs []*user_keep_status
+	var objs []*UserKeepStatus
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -99,12 +99,12 @@ func (m *user_keep_statusDB) List(ctx context.Context) ([]*user_keep_status, err
 }
 
 // Add creates a new record.
-func (m *user_keep_statusDB) Add(ctx context.Context, model *user_keep_status) error {
+func (m *UserKeepStatusDB) Add(ctx context.Context, model *UserKeepStatus) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userKeepStatus", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding user_keep_status", "error", err.Error())
+		goa.LogError(ctx, "error adding UserKeepStatus", "error", err.Error())
 		return err
 	}
 
@@ -112,12 +112,12 @@ func (m *user_keep_statusDB) Add(ctx context.Context, model *user_keep_status) e
 }
 
 // Update modifies a single record.
-func (m *user_keep_statusDB) Update(ctx context.Context, model *user_keep_status) error {
+func (m *UserKeepStatusDB) Update(ctx context.Context, model *UserKeepStatus) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userKeepStatus", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating user_keep_status", "error", err.Error())
+		goa.LogError(ctx, "error updating UserKeepStatus", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -126,15 +126,15 @@ func (m *user_keep_statusDB) Update(ctx context.Context, model *user_keep_status
 }
 
 // Delete removes a single record.
-func (m *user_keep_statusDB) Delete(ctx context.Context, id int) error {
+func (m *UserKeepStatusDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userKeepStatus", "delete"}, time.Now())
 
-	var obj user_keep_status
+	var obj UserKeepStatus
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting user_keep_status", "error", err.Error())
+		goa.LogError(ctx, "error deleting UserKeepStatus", "error", err.Error())
 		return err
 	}
 

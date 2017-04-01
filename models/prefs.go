@@ -18,62 +18,64 @@ import (
 )
 
 // 都道府県
-type prefs struct {
-	ID        int `gorm:"primary_key"` // primary key
-	Name      string
-	CreatedAt time.Time  // timestamp
-	DeletedAt *time.Time // nullable timestamp (soft delete)
-	UpdatedAt time.Time  // timestamp
+type Prefs struct {
+	ID              int      `gorm:"primary_key"` // primary key
+	Events          []Events // has many Events
+	Name            string
+	UserFollowPrefs []UserFollowPrefs // has many UserFollowPrefs
+	CreatedAt       time.Time         // timestamp
+	DeletedAt       *time.Time        // nullable timestamp (soft delete)
+	UpdatedAt       time.Time         // timestamp
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m prefs) TableName() string {
+func (m Prefs) TableName() string {
 	return "prefs"
 
 }
 
-// prefsDB is the implementation of the storage interface for
-// prefs.
-type prefsDB struct {
+// PrefsDB is the implementation of the storage interface for
+// Prefs.
+type PrefsDB struct {
 	Db *gorm.DB
 }
 
-// NewprefsDB creates a new storage type.
-func NewprefsDB(db *gorm.DB) *prefsDB {
-	return &prefsDB{Db: db}
+// NewPrefsDB creates a new storage type.
+func NewPrefsDB(db *gorm.DB) *PrefsDB {
+	return &PrefsDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *prefsDB) DB() interface{} {
+func (m *PrefsDB) DB() interface{} {
 	return m.Db
 }
 
-// prefsStorage represents the storage interface.
-type prefsStorage interface {
+// PrefsStorage represents the storage interface.
+type PrefsStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*prefs, error)
-	Get(ctx context.Context, id int) (*prefs, error)
-	Add(ctx context.Context, prefs *prefs) error
-	Update(ctx context.Context, prefs *prefs) error
+	List(ctx context.Context) ([]*Prefs, error)
+	Get(ctx context.Context, id int) (*Prefs, error)
+	Add(ctx context.Context, prefs *Prefs) error
+	Update(ctx context.Context, prefs *Prefs) error
 	Delete(ctx context.Context, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *prefsDB) TableName() string {
+func (m *PrefsDB) TableName() string {
 	return "prefs"
 
 }
 
 // CRUD Functions
 
-// Get returns a single prefs as a Database Model
+// Get returns a single Prefs as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *prefsDB) Get(ctx context.Context, id int) (*prefs, error) {
+func (m *PrefsDB) Get(ctx context.Context, id int) (*Prefs, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "prefs", "get"}, time.Now())
 
-	var native prefs
+	var native Prefs
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -82,11 +84,11 @@ func (m *prefsDB) Get(ctx context.Context, id int) (*prefs, error) {
 	return &native, err
 }
 
-// List returns an array of prefs
-func (m *prefsDB) List(ctx context.Context) ([]*prefs, error) {
+// List returns an array of Prefs
+func (m *PrefsDB) List(ctx context.Context) ([]*Prefs, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "prefs", "list"}, time.Now())
 
-	var objs []*prefs
+	var objs []*Prefs
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -96,12 +98,12 @@ func (m *prefsDB) List(ctx context.Context) ([]*prefs, error) {
 }
 
 // Add creates a new record.
-func (m *prefsDB) Add(ctx context.Context, model *prefs) error {
+func (m *PrefsDB) Add(ctx context.Context, model *Prefs) error {
 	defer goa.MeasureSince([]string{"goa", "db", "prefs", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding prefs", "error", err.Error())
+		goa.LogError(ctx, "error adding Prefs", "error", err.Error())
 		return err
 	}
 
@@ -109,12 +111,12 @@ func (m *prefsDB) Add(ctx context.Context, model *prefs) error {
 }
 
 // Update modifies a single record.
-func (m *prefsDB) Update(ctx context.Context, model *prefs) error {
+func (m *PrefsDB) Update(ctx context.Context, model *Prefs) error {
 	defer goa.MeasureSince([]string{"goa", "db", "prefs", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating prefs", "error", err.Error())
+		goa.LogError(ctx, "error updating Prefs", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -123,15 +125,15 @@ func (m *prefsDB) Update(ctx context.Context, model *prefs) error {
 }
 
 // Delete removes a single record.
-func (m *prefsDB) Delete(ctx context.Context, id int) error {
+func (m *PrefsDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "prefs", "delete"}, time.Now())
 
-	var obj prefs
+	var obj Prefs
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting prefs", "error", err.Error())
+		goa.LogError(ctx, "error deleting Prefs", "error", err.Error())
 		return err
 	}
 

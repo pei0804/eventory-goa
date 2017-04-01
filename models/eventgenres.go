@@ -19,10 +19,10 @@ import (
 )
 
 // イベントジャンル
-type event_genres struct {
-	ID        int `gorm:"primary_key"` // primary key
-	EventID   int
-	GenreID   int
+type EventGenres struct {
+	ID        int        `gorm:"primary_key"` // primary key
+	EventID   int        // has many EventGenres
+	GenreID   int        // has many EventGenres
 	CreatedAt time.Time  // timestamp
 	DeletedAt *time.Time // nullable timestamp (soft delete)
 	UpdatedAt time.Time  // timestamp
@@ -30,34 +30,34 @@ type event_genres struct {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m event_genres) TableName() string {
+func (m EventGenres) TableName() string {
 	return "event_genres"
 
 }
 
-// event_genresDB is the implementation of the storage interface for
-// event_genres.
-type event_genresDB struct {
+// EventGenresDB is the implementation of the storage interface for
+// EventGenres.
+type EventGenresDB struct {
 	Db *gorm.DB
 }
 
-// Newevent_genresDB creates a new storage type.
-func Newevent_genresDB(db *gorm.DB) *event_genresDB {
-	return &event_genresDB{Db: db}
+// NewEventGenresDB creates a new storage type.
+func NewEventGenresDB(db *gorm.DB) *EventGenresDB {
+	return &EventGenresDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *event_genresDB) DB() interface{} {
+func (m *EventGenresDB) DB() interface{} {
 	return m.Db
 }
 
-// event_genresStorage represents the storage interface.
-type event_genresStorage interface {
+// EventGenresStorage represents the storage interface.
+type EventGenresStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*event_genres, error)
-	Get(ctx context.Context, id int) (*event_genres, error)
-	Add(ctx context.Context, eventGenres *event_genres) error
-	Update(ctx context.Context, eventGenres *event_genres) error
+	List(ctx context.Context) ([]*EventGenres, error)
+	Get(ctx context.Context, id int) (*EventGenres, error)
+	Add(ctx context.Context, eventgenres *EventGenres) error
+	Update(ctx context.Context, eventgenres *EventGenres) error
 	Delete(ctx context.Context, id int) error
 
 	ListEvent(ctx context.Context) []*app.Event
@@ -66,19 +66,19 @@ type event_genresStorage interface {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *event_genresDB) TableName() string {
+func (m *EventGenresDB) TableName() string {
 	return "event_genres"
 
 }
 
 // CRUD Functions
 
-// Get returns a single event_genres as a Database Model
+// Get returns a single EventGenres as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *event_genresDB) Get(ctx context.Context, id int) (*event_genres, error) {
+func (m *EventGenresDB) Get(ctx context.Context, id int) (*EventGenres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "eventGenres", "get"}, time.Now())
 
-	var native event_genres
+	var native EventGenres
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -87,11 +87,11 @@ func (m *event_genresDB) Get(ctx context.Context, id int) (*event_genres, error)
 	return &native, err
 }
 
-// List returns an array of event_genres
-func (m *event_genresDB) List(ctx context.Context) ([]*event_genres, error) {
+// List returns an array of EventGenres
+func (m *EventGenresDB) List(ctx context.Context) ([]*EventGenres, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "eventGenres", "list"}, time.Now())
 
-	var objs []*event_genres
+	var objs []*EventGenres
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -101,12 +101,12 @@ func (m *event_genresDB) List(ctx context.Context) ([]*event_genres, error) {
 }
 
 // Add creates a new record.
-func (m *event_genresDB) Add(ctx context.Context, model *event_genres) error {
+func (m *EventGenresDB) Add(ctx context.Context, model *EventGenres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "eventGenres", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding event_genres", "error", err.Error())
+		goa.LogError(ctx, "error adding EventGenres", "error", err.Error())
 		return err
 	}
 
@@ -114,12 +114,12 @@ func (m *event_genresDB) Add(ctx context.Context, model *event_genres) error {
 }
 
 // Update modifies a single record.
-func (m *event_genresDB) Update(ctx context.Context, model *event_genres) error {
+func (m *EventGenresDB) Update(ctx context.Context, model *EventGenres) error {
 	defer goa.MeasureSince([]string{"goa", "db", "eventGenres", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating event_genres", "error", err.Error())
+		goa.LogError(ctx, "error updating EventGenres", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -128,15 +128,15 @@ func (m *event_genresDB) Update(ctx context.Context, model *event_genres) error 
 }
 
 // Delete removes a single record.
-func (m *event_genresDB) Delete(ctx context.Context, id int) error {
+func (m *EventGenresDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "eventGenres", "delete"}, time.Now())
 
-	var obj event_genres
+	var obj EventGenres
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting event_genres", "error", err.Error())
+		goa.LogError(ctx, "error deleting EventGenres", "error", err.Error())
 		return err
 	}
 

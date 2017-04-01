@@ -21,7 +21,7 @@ import (
 // MediaType Retrieval Functions
 
 // ListGenre returns an array of view: default.
-func (m *genresDB) ListGenre(ctx context.Context) []*app.Genre {
+func (m *GenresDB) ListGenre(ctx context.Context) []*app.Genre {
 	defer goa.MeasureSince([]string{"goa", "db", "genre", "listgenre"}, time.Now())
 
 	var native []*Genres
@@ -29,37 +29,37 @@ func (m *genresDB) ListGenre(ctx context.Context) []*app.Genre {
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error listing genres", "error", err.Error())
+		goa.LogError(ctx, "error listing Genres", "error", err.Error())
 		return objs
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.genresToGenre())
+		objs = append(objs, t.GenresToGenre())
 	}
 
 	return objs
 }
 
-// genresToGenre loads a genres and builds the default view of media type Genre.
-func (m *genres) genresToGenre() *app.Genre {
+// GenresToGenre loads a Genres and builds the default view of media type Genre.
+func (m *Genres) GenresToGenre() *app.Genre {
 	genres := &app.Genre{}
 	genres.Name = &m.Name
 
 	return genres
 }
 
-// OneGenre loads a genres and builds the default view of media type Genre.
-func (m *genresDB) OneGenre(ctx context.Context, id int) (*app.Genre, error) {
+// OneGenre loads a Genres and builds the default view of media type Genre.
+func (m *GenresDB) OneGenre(ctx context.Context, id int) (*app.Genre, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "genre", "onegenre"}, time.Now())
 
-	var native genres
-	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	var native Genres
+	err := m.Db.Scopes().Table(m.TableName()).Preload("EventGenres").Preload("UserFollowGenres").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		goa.LogError(ctx, "error getting genres", "error", err.Error())
+		goa.LogError(ctx, "error getting Genres", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.genresToGenre()
+	view := *native.GenresToGenre()
 	return &view, err
 }

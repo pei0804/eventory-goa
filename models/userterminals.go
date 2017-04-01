@@ -18,13 +18,13 @@ import (
 )
 
 // ユーザーの端末情報
-type user_terminals struct {
+type UserTerminals struct {
 	ID            int `gorm:"primary_key"` // primary key
 	ClientVersion string
 	Identifier    bool
 	Platform      string
 	Token         string
-	UserID        int
+	UserID        int        // has many UserTerminals
 	CreatedAt     time.Time  // timestamp
 	DeletedAt     *time.Time // nullable timestamp (soft delete)
 	UpdatedAt     time.Time  // timestamp
@@ -32,52 +32,52 @@ type user_terminals struct {
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m user_terminals) TableName() string {
+func (m UserTerminals) TableName() string {
 	return "user_terminals"
 
 }
 
-// user_terminalsDB is the implementation of the storage interface for
-// user_terminals.
-type user_terminalsDB struct {
+// UserTerminalsDB is the implementation of the storage interface for
+// UserTerminals.
+type UserTerminalsDB struct {
 	Db *gorm.DB
 }
 
-// Newuser_terminalsDB creates a new storage type.
-func Newuser_terminalsDB(db *gorm.DB) *user_terminalsDB {
-	return &user_terminalsDB{Db: db}
+// NewUserTerminalsDB creates a new storage type.
+func NewUserTerminalsDB(db *gorm.DB) *UserTerminalsDB {
+	return &UserTerminalsDB{Db: db}
 }
 
 // DB returns the underlying database.
-func (m *user_terminalsDB) DB() interface{} {
+func (m *UserTerminalsDB) DB() interface{} {
 	return m.Db
 }
 
-// user_terminalsStorage represents the storage interface.
-type user_terminalsStorage interface {
+// UserTerminalsStorage represents the storage interface.
+type UserTerminalsStorage interface {
 	DB() interface{}
-	List(ctx context.Context) ([]*user_terminals, error)
-	Get(ctx context.Context, id int) (*user_terminals, error)
-	Add(ctx context.Context, userTerminals *user_terminals) error
-	Update(ctx context.Context, userTerminals *user_terminals) error
+	List(ctx context.Context) ([]*UserTerminals, error)
+	Get(ctx context.Context, id int) (*UserTerminals, error)
+	Add(ctx context.Context, userterminals *UserTerminals) error
+	Update(ctx context.Context, userterminals *UserTerminals) error
 	Delete(ctx context.Context, id int) error
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
 // in the database.
-func (m *user_terminalsDB) TableName() string {
+func (m *UserTerminalsDB) TableName() string {
 	return "user_terminals"
 
 }
 
 // CRUD Functions
 
-// Get returns a single user_terminals as a Database Model
+// Get returns a single UserTerminals as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *user_terminalsDB) Get(ctx context.Context, id int) (*user_terminals, error) {
+func (m *UserTerminalsDB) Get(ctx context.Context, id int) (*UserTerminals, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userTerminals", "get"}, time.Now())
 
-	var native user_terminals
+	var native UserTerminals
 	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
@@ -86,11 +86,11 @@ func (m *user_terminalsDB) Get(ctx context.Context, id int) (*user_terminals, er
 	return &native, err
 }
 
-// List returns an array of user_terminals
-func (m *user_terminalsDB) List(ctx context.Context) ([]*user_terminals, error) {
+// List returns an array of UserTerminals
+func (m *UserTerminalsDB) List(ctx context.Context) ([]*UserTerminals, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userTerminals", "list"}, time.Now())
 
-	var objs []*user_terminals
+	var objs []*UserTerminals
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -100,12 +100,12 @@ func (m *user_terminalsDB) List(ctx context.Context) ([]*user_terminals, error) 
 }
 
 // Add creates a new record.
-func (m *user_terminalsDB) Add(ctx context.Context, model *user_terminals) error {
+func (m *UserTerminalsDB) Add(ctx context.Context, model *UserTerminals) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userTerminals", "add"}, time.Now())
 
 	err := m.Db.Create(model).Error
 	if err != nil {
-		goa.LogError(ctx, "error adding user_terminals", "error", err.Error())
+		goa.LogError(ctx, "error adding UserTerminals", "error", err.Error())
 		return err
 	}
 
@@ -113,12 +113,12 @@ func (m *user_terminalsDB) Add(ctx context.Context, model *user_terminals) error
 }
 
 // Update modifies a single record.
-func (m *user_terminalsDB) Update(ctx context.Context, model *user_terminals) error {
+func (m *UserTerminalsDB) Update(ctx context.Context, model *UserTerminals) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userTerminals", "update"}, time.Now())
 
 	obj, err := m.Get(ctx, model.ID)
 	if err != nil {
-		goa.LogError(ctx, "error updating user_terminals", "error", err.Error())
+		goa.LogError(ctx, "error updating UserTerminals", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
@@ -127,15 +127,15 @@ func (m *user_terminalsDB) Update(ctx context.Context, model *user_terminals) er
 }
 
 // Delete removes a single record.
-func (m *user_terminalsDB) Delete(ctx context.Context, id int) error {
+func (m *UserTerminalsDB) Delete(ctx context.Context, id int) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userTerminals", "delete"}, time.Now())
 
-	var obj user_terminals
+	var obj UserTerminals
 
 	err := m.Db.Delete(&obj, id).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error deleting user_terminals", "error", err.Error())
+		goa.LogError(ctx, "error deleting UserTerminals", "error", err.Error())
 		return err
 	}
 

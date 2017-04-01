@@ -21,7 +21,7 @@ import (
 // MediaType Retrieval Functions
 
 // ListEvent returns an array of view: default.
-func (m *eventsDB) ListEvent(ctx context.Context) []*app.Event {
+func (m *EventsDB) ListEvent(ctx context.Context) []*app.Event {
 	defer goa.MeasureSince([]string{"goa", "db", "event", "listevent"}, time.Now())
 
 	var native []*Events
@@ -29,19 +29,19 @@ func (m *eventsDB) ListEvent(ctx context.Context) []*app.Event {
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error listing events", "error", err.Error())
+		goa.LogError(ctx, "error listing Events", "error", err.Error())
 		return objs
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.eventsToEvent())
+		objs = append(objs, t.EventsToEvent())
 	}
 
 	return objs
 }
 
-// eventsToEvent loads a events and builds the default view of media type Event.
-func (m *events) eventsToEvent() *app.Event {
+// EventsToEvent loads a Events and builds the default view of media type Event.
+func (m *Events) EventsToEvent() *app.Event {
 	events := &app.Event{}
 	events.Accepte = m.Accepte
 	events.Address = m.Address
@@ -57,18 +57,18 @@ func (m *events) eventsToEvent() *app.Event {
 	return events
 }
 
-// OneEvent loads a events and builds the default view of media type Event.
-func (m *eventsDB) OneEvent(ctx context.Context, id int) (*app.Event, error) {
+// OneEvent loads a Events and builds the default view of media type Event.
+func (m *EventsDB) OneEvent(ctx context.Context, id int) (*app.Event, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "event", "oneevent"}, time.Now())
 
-	var native events
-	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	var native Events
+	err := m.Db.Scopes().Table(m.TableName()).Preload("EventGenres").Preload("UserKeepStatus").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		goa.LogError(ctx, "error getting events", "error", err.Error())
+		goa.LogError(ctx, "error getting Events", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.eventsToEvent()
+	view := *native.EventsToEvent()
 	return &view, err
 }
