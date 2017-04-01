@@ -1,4 +1,4 @@
-// +build !js,!appengine
+// +build !js
 
 package goa
 
