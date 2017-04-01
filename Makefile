@@ -29,3 +29,7 @@ generate:
 	@goagen app     -d github.com/tikasan/eventory-goa/design
 	@goagen swagger -d github.com/tikasan/eventory-goa/design
 	@goagen client  -d github.com/tikasan/eventory-goa/design
+
+model:
+	@rm -rf models
+	@goagen --design=github.com/tikasan/eventory-goa/design gen --pkg-path=github.com/goadesign/gorma
