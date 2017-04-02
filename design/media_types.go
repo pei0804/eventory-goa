@@ -75,6 +75,22 @@ var Genre = MediaType("application/vnd.genre+json", func() {
 	})
 })
 
+var Pref = MediaType("application/vnd.pref+json", func() {
+	Description("都道府県")
+	Attributes(func() {
+		Attribute("ID", Integer, "都道府県ID", func() {
+			Example(1)
+		})
+		Attribute("name", String, "都道府県名", func() {
+			Example("大阪府")
+		})
+	})
+	View("default", func() {
+		Attribute("ID")
+		Attribute("name")
+	})
+})
+
 var Token = MediaType("application/vnd.token+json", func() {
 	Description("ユーザー情報")
 	Attributes(func() {

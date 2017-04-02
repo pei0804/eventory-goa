@@ -21,45 +21,45 @@ import (
 // MediaType Retrieval Functions
 
 // ListGenre returns an array of view: default.
-func (m *GenresDB) ListGenre(ctx context.Context) []*app.Genre {
+func (m *GenreDB) ListGenre(ctx context.Context) []*app.Genre {
 	defer goa.MeasureSince([]string{"goa", "db", "genre", "listgenre"}, time.Now())
 
-	var native []*Genres
+	var native []*Genre
 	var objs []*app.Genre
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
-		goa.LogError(ctx, "error listing Genres", "error", err.Error())
+		goa.LogError(ctx, "error listing Genre", "error", err.Error())
 		return objs
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.GenresToGenre())
+		objs = append(objs, t.GenreToGenre())
 	}
 
 	return objs
 }
 
-// GenresToGenre loads a Genres and builds the default view of media type Genre.
-func (m *Genres) GenresToGenre() *app.Genre {
-	genres := &app.Genre{}
-	genres.Name = &m.Name
+// GenreToGenre loads a Genre and builds the default view of media type Genre.
+func (m *Genre) GenreToGenre() *app.Genre {
+	genre := &app.Genre{}
+	genre.Name = &m.Name
 
-	return genres
+	return genre
 }
 
-// OneGenre loads a Genres and builds the default view of media type Genre.
-func (m *GenresDB) OneGenre(ctx context.Context, id int) (*app.Genre, error) {
+// OneGenre loads a Genre and builds the default view of media type Genre.
+func (m *GenreDB) OneGenre(ctx context.Context, id int) (*app.Genre, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "genre", "onegenre"}, time.Now())
 
-	var native Genres
+	var native Genre
 	err := m.Db.Scopes().Table(m.TableName()).Preload("EventGenres").Preload("UserFollowGenres").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		goa.LogError(ctx, "error getting Genres", "error", err.Error())
+		goa.LogError(ctx, "error getting Genre", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.GenresToGenre()
+	view := *native.GenreToGenre()
 	return &view, err
 }

@@ -21,12 +21,14 @@ import (
 type UserKeepStatus struct {
 	ID             int `gorm:"primary_key"` // primary key
 	BatchProcessed bool
-	EventID        int // has many UserKeepStatus
+	EventID        int // Belongs To Event
 	Status         string
-	UserID         int        // has many UserKeepStatus
+	UserID         int        // Belongs To User
 	CreatedAt      time.Time  // timestamp
 	DeletedAt      *time.Time // nullable timestamp (soft delete)
 	UpdatedAt      time.Time  // timestamp
+	Event          Event
+	User           User
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
@@ -67,6 +69,36 @@ type UserKeepStatusStorage interface {
 func (m *UserKeepStatusDB) TableName() string {
 	return "user_keep_status"
 
+}
+
+// Belongs To Relationships
+
+// UserKeepStatusFilterByEvent is a gorm filter for a Belongs To relationship.
+func UserKeepStatusFilterByEvent(eventID int, originaldb *gorm.DB) func(db *gorm.DB) *gorm.DB {
+
+	if eventID > 0 {
+
+		return func(db *gorm.DB) *gorm.DB {
+			return db.Where("event_id = ?", eventID)
+
+		}
+	}
+	return func(db *gorm.DB) *gorm.DB { return db }
+}
+
+// Belongs To Relationships
+
+// UserKeepStatusFilterByUser is a gorm filter for a Belongs To relationship.
+func UserKeepStatusFilterByUser(userID int, originaldb *gorm.DB) func(db *gorm.DB) *gorm.DB {
+
+	if userID > 0 {
+
+		return func(db *gorm.DB) *gorm.DB {
+			return db.Where("user_id = ?", userID)
+
+		}
+	}
+	return func(db *gorm.DB) *gorm.DB { return db }
 }
 
 // CRUD Functions
