@@ -43,7 +43,6 @@ func (m *EventDB) ListEvent(ctx context.Context, prefID int) []*app.Event {
 // EventToEvent loads a Event and builds the default view of media type Event.
 func (m *Event) EventToEvent() *app.Event {
 	event := &app.Event{}
-	event.Accepte = m.Accepte
 	event.Address = m.Address
 	tmp1 := &m.EndAt
 	event.EndAt = tmp1.EndAtToEndAt() // %!s(MISSING)
@@ -62,7 +61,7 @@ func (m *EventDB) OneEvent(ctx context.Context, id int, prefID int) (*app.Event,
 	defer goa.MeasureSince([]string{"goa", "db", "event", "oneevent"}, time.Now())
 
 	var native Event
-	err := m.Db.Scopes(EventFilterByPref(prefID, m.Db)).Table(m.TableName()).Preload("EventGenres").Preload("UserKeepStatus").Preload("Pref").Where("id = ?", id).Find(&native).Error
+	err := m.Db.Scopes(EventFilterByPref(prefID, m.Db)).Table(m.TableName()).Preload("EventGenres").Preload("UserFollowEvents").Preload("Pref").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		goa.LogError(ctx, "error getting Event", "error", err.Error())

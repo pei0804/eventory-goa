@@ -4,6 +4,8 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP INDEX search_index ON events;
 
+
+
 /* Drop Tables */
 
 DROP TABLE IF EXISTS event_genres;
@@ -15,6 +17,9 @@ DROP TABLE IF EXISTS user_follow_prefs;
 DROP TABLE IF EXISTS prefs;
 DROP TABLE IF EXISTS user_terminals;
 DROP TABLE IF EXISTS users;
+
+
+
 
 /* Create Tables */
 
@@ -29,7 +34,7 @@ CREATE TABLE events
 	url text NOT NULL COMMENT 'イベントページURL',
 	limits int NOT NULL COMMENT '参加人数上限',
 	wait int NOT NULL COMMENT 'キャンセル待ち人数',
-	accepte int NOT NULL COMMENT '参加済み人数',
+	accept int NOT NULL COMMENT '参加済み人数',
 	pref_id int(2) unsigned COMMENT '都道府県ID',
 	address text NOT NULL COMMENT '住所',
 	start_at datetime NOT NULL COMMENT '開催日時',
@@ -238,3 +243,6 @@ ALTER TABLE user_terminals
 /* Create Indexes */
 
 CREATE INDEX search_index USING BTREE ON events (end_at ASC, updated_at ASC, address ASC);
+
+
+

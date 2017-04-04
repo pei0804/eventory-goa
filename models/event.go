@@ -20,23 +20,23 @@ import (
 
 // イベント
 type Event struct {
-	ID             int `gorm:"primary_key"` // primary key
-	APIType        string
-	Accepte        int
-	Address        string
-	EventGenres    []EventGenre // has many EventGenres
-	Identifier     string
-	Limits         int
-	PrefID         int // has many Event
-	URL            string
-	UserKeepStatus []UserKeepStatus // has many UserKeepStatus
-	Wait           int
-	CreatedAt      time.Time  // timestamp
-	DeletedAt      *time.Time // nullable timestamp (soft delete)
-	EndAt          time.Time  // timestamp
-	StartAt        time.Time  // timestamp
-	UpdatedAt      time.Time  // timestamp
-	Pref           Pref
+	ID               int `gorm:"primary_key"` // primary key
+	APIType          string
+	Accept           int
+	Address          string
+	EventGenres      []EventGenre // has many EventGenres
+	Identifier       string
+	Limits           int
+	PrefID           int // has many Event
+	URL              string
+	UserFollowEvents []UserFollowEvent // has many UserFollowEvents
+	Wait             int
+	CreatedAt        time.Time  // timestamp
+	DeletedAt        *time.Time // nullable timestamp (soft delete)
+	EndAt            time.Time  // timestamp
+	StartAt          time.Time  // timestamp
+	UpdatedAt        time.Time  // timestamp
+	Pref             Pref
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name
