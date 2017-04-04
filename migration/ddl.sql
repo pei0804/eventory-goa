@@ -4,12 +4,10 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP INDEX search_index ON events;
 
-
-
 /* Drop Tables */
 
 DROP TABLE IF EXISTS event_genres;
-DROP TABLE IF EXISTS user_keep_status;
+DROP TABLE IF EXISTS user_follow_events;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS user_follow_genres;
 DROP TABLE IF EXISTS genres;
@@ -17,9 +15,6 @@ DROP TABLE IF EXISTS user_follow_prefs;
 DROP TABLE IF EXISTS prefs;
 DROP TABLE IF EXISTS user_terminals;
 DROP TABLE IF EXISTS users;
-
-
-
 
 /* Create Tables */
 
@@ -99,34 +94,8 @@ CREATE TABLE users
 ) COMMENT = 'ユーザー';
 
 
--- ジャンル
-CREATE TABLE user_follow_genres
-(
-	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ジャンルID',
-	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
-	genre_id bigint(20) unsigned NOT NULL COMMENT 'ジャンルID',
-	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
-	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
-	deleted_at datetime COMMENT '削除日',
-	PRIMARY KEY (id)
-) COMMENT = 'ユーザーのフォロージャンル';
-
-
--- 都道府県
-CREATE TABLE user_follow_prefs
-(
-	id int(2) unsigned NOT NULL AUTO_INCREMENT COMMENT '都道府県ID',
-	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
-	pref_id int(2) unsigned NOT NULL COMMENT '都道府県ID',
-	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
-	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
-	deleted_at datetime COMMENT '削除日',
-	PRIMARY KEY (id)
-) COMMENT = 'ユーザーのフォロー都道府県';
-
-
 -- ユーザーのキープ状態
-CREATE TABLE user_keep_status
+CREATE TABLE user_follow_events
 (
 	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
@@ -140,7 +109,33 @@ CREATE TABLE user_keep_status
 ) COMMENT = 'ユーザーのキープ状態';
 
 
--- ユーザー
+-- ジャンル
+CREATE TABLE user_follow_genres
+(
+	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ジャンルID',
+	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
+	genre_id bigint(20) unsigned NOT NULL COMMENT 'ジャンルID',
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
+	deleted_at datetime COMMENT '削除日',
+	PRIMARY KEY (id)
+) COMMENT = 'ジャンル';
+
+
+-- ユーザーのフォロー都道府県
+CREATE TABLE user_follow_prefs
+(
+	id int(2) unsigned NOT NULL AUTO_INCREMENT COMMENT '都道府県ID',
+	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
+	pref_id int(2) unsigned NOT NULL COMMENT '都道府県ID',
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
+	deleted_at datetime COMMENT '削除日',
+	PRIMARY KEY (id)
+) COMMENT = 'ユーザーのフォロー都道府県';
+
+
+-- ユーザー端末情報
 CREATE TABLE user_terminals
 (
 	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ユーザーID',
@@ -167,7 +162,7 @@ ALTER TABLE event_genres
 ;
 
 
-ALTER TABLE user_keep_status
+ALTER TABLE user_follow_events
 	ADD FOREIGN KEY (event_id)
 	REFERENCES events (id)
 	ON UPDATE RESTRICT
@@ -207,6 +202,14 @@ ALTER TABLE user_follow_prefs
 ;
 
 
+ALTER TABLE user_follow_events
+	ADD FOREIGN KEY (user_id)
+	REFERENCES users (id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE user_follow_genres
 	ADD FOREIGN KEY (user_id)
 	REFERENCES users (id)
@@ -216,14 +219,6 @@ ALTER TABLE user_follow_genres
 
 
 ALTER TABLE user_follow_prefs
-	ADD FOREIGN KEY (user_id)
-	REFERENCES users (id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE user_keep_status
 	ADD FOREIGN KEY (user_id)
 	REFERENCES users (id)
 	ON UPDATE RESTRICT
@@ -243,6 +238,3 @@ ALTER TABLE user_terminals
 /* Create Indexes */
 
 CREATE INDEX search_index USING BTREE ON events (end_at ASC, updated_at ASC, address ASC);
-
-
-
