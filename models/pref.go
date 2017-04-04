@@ -11,11 +11,12 @@
 package models
 
 import (
+	"time"
+
 	"../app"
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
-	"time"
 )
 
 // 都道府県
