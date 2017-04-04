@@ -17,3 +17,7 @@ import:
 - package: github.com/goadesign/gorma
 - package: github.com/jinzhu/gorm
   version: ~1.0.0
+- package: gopkg.in/yaml.v1
+- package: google.golang.org/appengine/...
+- package: github.com/mjibson/goon
+- package: cloud.google.com/go/storage
