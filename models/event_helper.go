@@ -11,11 +11,12 @@
 package models
 
 import (
-	"../app"
+	"time"
+
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
+	"github.com/tikasan/eventory-goa/app"
 	"golang.org/x/net/context"
-	"time"
 )
 
 // MediaType Retrieval Functions
@@ -44,12 +45,10 @@ func (m *EventDB) ListEvent(ctx context.Context, prefID int) []*app.Event {
 func (m *Event) EventToEvent() *app.Event {
 	event := &app.Event{}
 	event.Address = m.Address
-	tmp1 := &m.EndAt
-	event.EndAt = tmp1.EndAtToEndAt() // %!s(MISSING)
+	event.EndAt = m.EndAt // %!s(MISSING)
 	event.Identifier = m.Identifier
 	event.Limits = m.Limits
-	tmp2 := &m.StartAt
-	event.StartAt = tmp2.StartAtToStartAt() // %!s(MISSING)
+	event.StartAt = m.StartAt // %!s(MISSING)
 	event.URL = m.URL
 	event.Wait = m.Wait
 

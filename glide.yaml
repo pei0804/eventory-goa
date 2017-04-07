@@ -11,13 +11,27 @@ import:
   - middleware
   - uuid
 - package: github.com/spf13/cobra
-- package: golang.org/x/net
-  subpackages:
-  - context
 - package: github.com/goadesign/gorma
 - package: github.com/jinzhu/gorm
   version: ~1.0.0
 - package: gopkg.in/yaml.v1
-- package: google.golang.org/appengine/...
+- package: google.golang.org/appengine
+  subpackages:
+  - '...'
 - package: github.com/mjibson/goon
-- package: cloud.google.com/go/storage
+- package: cloud.google.com/go
+  subpackages:
+  - storage
+- package: google.golang.org/grpc
+  version: ~1.2.0
+- package: golang.org/x/net
+  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
+  subpackages:
+  - context
+  - context/ctxhttp
+  - http2
+  - http2/hpack
+  - idna
+  - internal/timeseries
+  - lex/httplex
+  - trace

@@ -1,18 +1,23 @@
 package controller
 
 import (
-	"github.com/tikasan/eventory-goa/app"
 	"github.com/goadesign/goa"
+	"github.com/jinzhu/gorm"
+	"github.com/tikasan/eventory-goa/app"
 )
 
 // GenresController implements the genres resource.
 type GenresController struct {
 	*goa.Controller
+	db *gorm.DB
 }
 
 // NewGenresController creates a genres controller.
-func NewGenresController(service *goa.Service) *GenresController {
-	return &GenresController{Controller: service.NewController("GenresController")}
+func NewGenresController(service *goa.Service, db *gorm.DB) *GenresController {
+	return &GenresController{
+		Controller: service.NewController("GenresController"),
+		db:         db,
+	}
 }
 
 // Create runs the create action.

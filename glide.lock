@@ -1,5 +1,5 @@
-hash: 631822b8208132f44cebd75b08b7a4b5b7b7969ab803112e2ab3eb1deddd24e7
-updated: 2017-04-04T16:31:31.500203318+09:00
+hash: da1e6a2c06eada7dd5227a2d692360a19a1570747c9b2423519f91a94201615d
+updated: 2017-04-07T12:07:45.338761925+09:00
 imports:
 - name: bitbucket.org/pkg/inflect
   version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
@@ -73,6 +73,10 @@ imports:
   version: 7aeaa2cce6ae7e18d2a6ee597b60ee137e999bd9
 - name: github.com/spf13/pflag
   version: d16db1e50e33dff1b6cdf37596cef36742128670
+- name: github.com/tikasan/eventory
+  version: a3d1fb70b73b3f3592ecd63849c34262fc2322cb
+  subpackages:
+  - define
 - name: github.com/tylerb/graceful
   version: 4df1190835320af7076dfcf27b3d071fd3612caf
 - name: github.com/valyala/fasttemplate
@@ -140,13 +144,14 @@ imports:
   - socket
   - urlfetch
 - name: google.golang.org/grpc
-  version: 21f8ed309495401e6fd79b3a9fd549582aed1b4c
+  version: cdee119ee21e61eef7093a41ba148fa83585e143
   subpackages:
   - codes
   - credentials
   - credentials/oauth
   - grpclog
   - internal
+  - keepalive
   - metadata
   - naming
   - peer

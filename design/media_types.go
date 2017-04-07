@@ -36,12 +36,8 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("address", String, "住所", func() {
 			Example("東京都渋谷区3-31-205")
 		})
-		Attribute("startAt", String, "開催日時", func() {
-			Example("2016-01-01 10:10:12")
-		})
-		Attribute("endAt", String, "終了日時", func() {
-			Example("2016-01-01 18:00:00")
-		})
+		Attribute("startAt", DateTime, "開催日時")
+		Attribute("endAt", DateTime, "終了日時")
 	})
 	Required("ID", "identifier", "apiType", "title", "url", "limits", "accepte", "wait", "address", "startAt", "endAt")
 	View("default", func() {

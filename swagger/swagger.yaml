@@ -12,10 +12,10 @@ definitions:
       accepte: 10
       address: 東京都渋谷区3-31-205
       apiType: ATDN
-      endAt: 2016-01-01 18:00:00
+      endAt: 1990-08-01T04:03:55+09:00
       identifier: 3-12313
       limits: 10
-      startAt: 2016-01-01 10:10:12
+      startAt: 1984-03-14T21:11:03+09:00
       title: アジャイル開発勉強会
       url: 2016-01-01 10:10:12
       wait: 5
@@ -40,7 +40,8 @@ definitions:
         type: string
       endAt:
         description: 終了日時
-        example: 2016-01-01 18:00:00
+        example: 1990-08-01T04:03:55+09:00
+        format: date-time
         type: string
       identifier:
         description: 識別子(api-event_id)
@@ -53,7 +54,8 @@ definitions:
         type: integer
       startAt:
         description: 開催日時
-        example: 2016-01-01 10:10:12
+        example: 1984-03-14T21:11:03+09:00
+        format: date-time
         type: string
       title:
         description: イベント名
@@ -90,10 +92,10 @@ definitions:
       accepte: 10
       address: 東京都渋谷区3-31-205
       apiType: ATDN
-      endAt: 2016-01-01 18:00:00
+      endAt: 1990-08-01T04:03:55+09:00
       identifier: 3-12313
       limits: 10
-      startAt: 2016-01-01 10:10:12
+      startAt: 1984-03-14T21:11:03+09:00
       title: アジャイル開発勉強会
       url: 2016-01-01 10:10:12
       wait: 5
@@ -101,10 +103,10 @@ definitions:
       accepte: 10
       address: 東京都渋谷区3-31-205
       apiType: ATDN
-      endAt: 2016-01-01 18:00:00
+      endAt: 1990-08-01T04:03:55+09:00
       identifier: 3-12313
       limits: 10
-      startAt: 2016-01-01 10:10:12
+      startAt: 1984-03-14T21:11:03+09:00
       title: アジャイル開発勉強会
       url: 2016-01-01 10:10:12
       wait: 5
@@ -133,6 +135,10 @@ definitions:
     description: GenreCollection is the media type for an array of Genre (default
       view)
     example:
+    - ID: 1
+      name: javascript
+    - ID: 1
+      name: javascript
     - ID: 1
       name: javascript
     items:

@@ -11,10 +11,11 @@
 package models
 
 import (
+	"time"
+
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
-	"time"
 )
 
 // ユーザーのキープ状態

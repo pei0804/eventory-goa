@@ -13,6 +13,7 @@ package client
 import (
 	"github.com/goadesign/goa"
 	"net/http"
+	"time"
 )
 
 // イベント情報 (default view)
@@ -28,13 +29,13 @@ type Event struct {
 	// APIの種類 enum('atdn','connpass','doorkeeper')
 	APIType string `form:"apiType" json:"apiType" xml:"apiType"`
 	// 終了日時
-	EndAt string `form:"endAt" json:"endAt" xml:"endAt"`
+	EndAt time.Time `form:"endAt" json:"endAt" xml:"endAt"`
 	// 識別子(api-event_id)
 	Identifier string `form:"identifier" json:"identifier" xml:"identifier"`
 	// 参加人数上限
 	Limits int `form:"limits" json:"limits" xml:"limits"`
 	// 開催日時
-	StartAt string `form:"startAt" json:"startAt" xml:"startAt"`
+	StartAt time.Time `form:"startAt" json:"startAt" xml:"startAt"`
 	// イベント名
 	Title string `form:"title" json:"title" xml:"title"`
 	// イベントページURL
@@ -62,12 +63,7 @@ func (mt *Event) Validate() (err error) {
 	if mt.Address == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "address"))
 	}
-	if mt.StartAt == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "startAt"))
-	}
-	if mt.EndAt == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "endAt"))
-	}
+
 	return
 }
 
@@ -134,6 +130,23 @@ func (c *Client) DecodeGenreCollection(resp *http.Response) (GenreCollection, er
 // DecodeErrorResponse decodes the ErrorResponse instance encoded in resp body.
 func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, error) {
 	var decoded goa.ErrorResponse
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// 都道府県 (default view)
+//
+// Identifier: application/vnd.pref+json; view=default
+type Pref struct {
+	// 都道府県ID
+	ID *int `form:"ID,omitempty" json:"ID,omitempty" xml:"ID,omitempty"`
+	// 都道府県名
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+}
+
+// DecodePref decodes the Pref instance encoded in resp body.
+func (c *Client) DecodePref(resp *http.Response) (*Pref, error) {
+	var decoded Pref
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
 }

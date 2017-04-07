@@ -1,23 +1,19 @@
 package db
 
 import (
-	"database/sql"
 	"io"
 	"io/ioutil"
 	"os"
 
-	"cloud.google.com/go/storage"
-	"github.com/labstack/echo"
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/file"
+	"github.com/jinzhu/gorm"
 
 	yaml "gopkg.in/yaml.v1"
 )
 
 type Configs map[string]*Config
 
-func (cs Configs) Open() (*sql.DB, error) {
-	config, ok := cs["setting"]
+func (cs Configs) Open() (*gorm.DB, error) {
+	config, ok := cs["development"]
 	if !ok {
 		return nil, nil
 	}
@@ -32,32 +28,17 @@ func (c *Config) DSN() string {
 	return c.Datasource
 }
 
-func (c *Config) Open() (*sql.DB, error) {
-	return sql.Open("mysql", c.DSN())
+func (c *Config) Open() (*gorm.DB, error) {
+	return gorm.Open("mysql", c.DSN())
 }
 
-func NewConfigsFromFile(FileName string, c echo.Context) (Configs, error) {
-
-	ctx := appengine.NewContext(c.Request())
-	bucketname, err := file.DefaultBucketName(ctx)
+func NewConfigsFromFile() (Configs, error) {
+	f, err := os.Open("dbconfig.yml")
 	if err != nil {
 		return nil, err
 	}
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	reader, err := client.Bucket(bucketname).Object(FileName).NewReader(ctx)
-	if err != nil {
-		f, err := os.Open("dbconfig.yml")
-		if err != nil {
-			return nil, err
-		}
-		defer f.Close()
-		return NewConfigs(f)
-	}
-	defer reader.Close()
-	return NewConfigs(reader)
+	defer f.Close()
+	return NewConfigs(f)
 }
 
 func NewConfigs(r io.Reader) (Configs, error) {

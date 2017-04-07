@@ -11,10 +11,11 @@
 package models
 
 import (
+	"time"
+
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
-	"time"
 )
 
 // ユーザー
@@ -22,9 +23,9 @@ type User struct {
 	ID               int `gorm:"primary_key"` // primary key
 	Email            string
 	Name             string
+	UserFollowEvents []UserFollowEvent // has many UserFollowEvents
 	UserFollowGenres []UserFollowGenre // has many UserFollowGenres
 	UserFollowPrefs  []UserFollowPref  // has many UserFollowPrefs
-	UserKeepStatus   []UserKeepStatus  // has many UserKeepStatus
 	UserTerminals    []UserTerminal    // has many UserTerminals
 	CreatedAt        time.Time         // timestamp
 	DeletedAt        *time.Time        // nullable timestamp (soft delete)

@@ -2,17 +2,22 @@ package controller
 
 import (
 	"github.com/goadesign/goa"
+	"github.com/jinzhu/gorm"
 	"github.com/tikasan/eventory-goa/app"
 )
 
 // UsersController implements the users resource.
 type UsersController struct {
 	*goa.Controller
+	db *gorm.DB
 }
 
 // NewUsersController creates a users controller.
-func NewUsersController(service *goa.Service) *UsersController {
-	return &UsersController{Controller: service.NewController("UsersController")}
+func NewUsersController(service *goa.Service, db *gorm.DB) *UsersController {
+	return &UsersController{
+		Controller: service.NewController("UsersController"),
+		db:         db,
+	}
 }
 
 // AccountCreate runs the account create action.

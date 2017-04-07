@@ -32,8 +32,8 @@ var _ = StorageGroup("eventory", func() {
 			BelongsTo("Pref")
 		})
 		Model("Pref", func() {
-			Description("都道府県")
 			RendersTo(Pref)
+			Description("都道府県")
 			Field("id", gorma.Integer, func() {
 				PrimaryKey()
 			})
@@ -71,7 +71,7 @@ var _ = StorageGroup("eventory", func() {
 			HasMany("UserFollowGenres", "UserFollowGenre")
 			HasMany("UserFollowPrefs", "UserFollowPref")
 			HasMany("UserTerminals", "UserTerminal")
-			HasMany("UserKeepStatus", "UserKeepStatus")
+			HasMany("UserFollowEvents", "UserFollowEvent")
 		})
 		Model("EventGenre", func() {
 			Description("イベントジャンル")

@@ -1,11 +1,5 @@
 SET SESSION FOREIGN_KEY_CHECKS=0;
 
-/* Drop Indexes */
-
-DROP INDEX search_index ON events;
-
-
-
 /* Drop Tables */
 
 DROP TABLE IF EXISTS event_genres;
@@ -18,10 +12,31 @@ DROP TABLE IF EXISTS prefs;
 DROP TABLE IF EXISTS user_terminals;
 DROP TABLE IF EXISTS users;
 
-
-
-
 /* Create Tables */
+
+
+-- ユーザー
+CREATE TABLE users
+(
+	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ユーザーID',
+	name varchar(30) COMMENT 'ユーザー名',
+	email text COMMENT 'メールアドレス',
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
+	deleted_at datetime COMMENT '削除日',
+	PRIMARY KEY (id)
+) COMMENT = 'ユーザー';
+
+-- 都道府県
+CREATE TABLE prefs
+(
+	id int(2) unsigned NOT NULL AUTO_INCREMENT COMMENT '都道府県ID',
+	name char(4) NOT NULL COMMENT '都道府県名',
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
+	deleted_at datetime COMMENT '削除日',
+	PRIMARY KEY (id)
+) COMMENT = '都道府県';
 
 -- イベント
 CREATE TABLE events
@@ -47,6 +62,17 @@ CREATE TABLE events
 	UNIQUE (identifier)
 ) COMMENT = 'イベント' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+-- ジャンル
+CREATE TABLE genres
+(
+	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ジャンルID',
+	name varchar(30) NOT NULL COMMENT 'ジャンル名(表示用)',
+	keyword varchar(50) NOT NULL COMMENT 'キーワード',
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
+	deleted_at datetime COMMENT '削除日',
+	PRIMARY KEY (id)
+) COMMENT = 'ジャンル';
 
 -- イベントジャンル
 CREATE TABLE event_genres
@@ -61,44 +87,6 @@ CREATE TABLE event_genres
 ) COMMENT = 'イベントジャンル';
 
 
--- ジャンル
-CREATE TABLE genres
-(
-	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ジャンルID',
-	name varchar(30) NOT NULL COMMENT 'ジャンル名(表示用)',
-	keyword varchar(50) NOT NULL COMMENT 'キーワード',
-	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
-	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
-	deleted_at datetime COMMENT '削除日',
-	PRIMARY KEY (id)
-) COMMENT = 'ジャンル';
-
-
--- 都道府県
-CREATE TABLE prefs
-(
-	id int(2) unsigned NOT NULL AUTO_INCREMENT COMMENT '都道府県ID',
-	name char(4) NOT NULL COMMENT '都道府県名',
-	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
-	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
-	deleted_at datetime COMMENT '削除日',
-	PRIMARY KEY (id)
-) COMMENT = '都道府県';
-
-
--- ユーザー
-CREATE TABLE users
-(
-	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ユーザーID',
-	name varchar(30) COMMENT 'ユーザー名',
-	email text COMMENT 'メールアドレス',
-	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
-	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
-	deleted_at datetime COMMENT '削除日',
-	PRIMARY KEY (id)
-) COMMENT = 'ユーザー';
-
-
 -- ユーザーのキープ状態
 CREATE TABLE user_follow_events
 (
@@ -106,7 +94,7 @@ CREATE TABLE user_follow_events
 	user_id bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
 	event_id bigint(20) unsigned NOT NULL COMMENT 'イベントID',
 	status enum('keep','nokeep') NOT NULL COMMENT '状態',
-	batch_processed boolean DEFAULT 'false' NOT NULL COMMENT 'バッチ処理済み',
+	batch_processed boolean DEFAULT '0' NOT NULL COMMENT 'バッチ処理済み',
 	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
 	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
 	deleted_at datetime COMMENT '削除日',
@@ -114,7 +102,7 @@ CREATE TABLE user_follow_events
 ) COMMENT = 'ユーザーのキープ状態';
 
 
--- ジャンル
+-- ユーザーフォロージャンル
 CREATE TABLE user_follow_genres
 (
 	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ジャンルID',
@@ -124,7 +112,7 @@ CREATE TABLE user_follow_genres
 	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
 	deleted_at datetime COMMENT '削除日',
 	PRIMARY KEY (id)
-) COMMENT = 'ジャンル';
+) COMMENT = 'ユーザーフォロージャンル';
 
 
 -- ユーザーのフォロー都道府県
@@ -237,12 +225,3 @@ ALTER TABLE user_terminals
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
-
-
-
-/* Create Indexes */
-
-CREATE INDEX search_index USING BTREE ON events (end_at ASC, updated_at ASC, address ASC);
-
-
-

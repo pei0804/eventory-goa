@@ -1,18 +1,23 @@
 package controller
 
 import (
-	"github.com/tikasan/eventory-goa/app"
 	"github.com/goadesign/goa"
+	"github.com/jinzhu/gorm"
+	"github.com/tikasan/eventory-goa/app"
 )
 
 // PrefsController implements the prefs resource.
 type PrefsController struct {
 	*goa.Controller
+	db *gorm.DB
 }
 
 // NewPrefsController creates a prefs controller.
-func NewPrefsController(service *goa.Service) *PrefsController {
-	return &PrefsController{Controller: service.NewController("PrefsController")}
+func NewPrefsController(service *goa.Service, db *gorm.DB) *PrefsController {
+	return &PrefsController{
+		Controller: service.NewController("PrefsController"),
+		db:         db,
+	}
 }
 
 // PrefFollow runs the pref follow action.

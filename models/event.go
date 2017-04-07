@@ -11,11 +11,12 @@
 package models
 
 import (
-	"../app"
+	"time"
+
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
+	"github.com/tikasan/eventory-goa/app"
 	"golang.org/x/net/context"
-	"time"
 )
 
 // イベント
@@ -114,10 +115,10 @@ func (m *EventDB) Get(ctx context.Context, id int) (*Event, error) {
 }
 
 // List returns an array of Event
-func (m *EventDB) List(ctx context.Context) ([]*Event, error) {
+func (m *EventDB) List(ctx context.Context) ([]*app.Event, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "event", "list"}, time.Now())
 
-	var objs []*Event
+	var objs []*app.Event
 	err := m.Db.Table(m.TableName()).Find(&objs).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
