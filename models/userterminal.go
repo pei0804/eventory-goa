@@ -22,7 +22,7 @@ import (
 type UserTerminal struct {
 	ID            int `gorm:"primary_key"` // primary key
 	ClientVersion string
-	Identifier    bool
+	Identifier    string
 	Platform      string
 	Token         string
 	UserID        int        // Belongs To User
@@ -101,6 +101,40 @@ func (m *UserTerminalDB) Get(ctx context.Context, id int) (*UserTerminal, error)
 	}
 
 	return &native, err
+}
+
+func (m *UserTerminalDB) GetByToken(ctx context.Context, token string) (*UserTerminal, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "userTerminal", "get"}, time.Now())
+
+	var native UserTerminal
+	err := m.Db.Table(m.TableName()).Where("token = ?", token).Find(&native).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &native, err
+}
+
+func (m *UserTerminalDB) GetByIdentifier(ctx context.Context, identifier string) (*UserTerminal, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "userTerminal", "get userID By Identifier"}, time.Now())
+
+	var native UserTerminal
+	err := m.Db.Table(m.TableName()).Where("identifier = ?", identifier).Find(&native).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return &native, err
+}
+
+func (m *UserTerminalDB) GetUserIDByToken(ctx context.Context, token string) (int, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "userTerminal", "get userID By token"}, time.Now())
+
+	var native UserTerminal
+	err := m.Db.Table(m.TableName()).Where("token = ?", token).Find(&native).Error
+	if err == gorm.ErrRecordNotFound {
+		return 0, err
+	}
+	return native.UserID, err
 }
 
 // List returns an array of UserTerminal

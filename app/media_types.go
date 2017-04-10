@@ -98,6 +98,14 @@ type Genre struct {
 // Identifier: application/vnd.genre+json; type=collection; view=default
 type GenreCollection []*Genre
 
+// ユーザー情報 (default view)
+//
+// Identifier: application/vnd.message+json; view=default
+type Message struct {
+	// トークン
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+}
+
 // 都道府県 (default view)
 //
 // Identifier: application/vnd.pref+json; view=default

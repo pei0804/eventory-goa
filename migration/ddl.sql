@@ -20,7 +20,7 @@ CREATE TABLE users
 (
 	id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ユーザーID',
 	name varchar(30) COMMENT 'ユーザー名',
-	email text COMMENT 'メールアドレス',
+	email varchar(255) COMMENT 'メールアドレス',
 	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
 	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
 	deleted_at datetime COMMENT '削除日',

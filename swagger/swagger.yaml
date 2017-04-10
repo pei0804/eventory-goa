@@ -145,6 +145,17 @@ definitions:
       $ref: '#/definitions/Genre'
     title: 'Mediatype identifier: application/vnd.genre+json; type=collection; view=default'
     type: array
+  Message:
+    description: ユーザー情報 (default view)
+    example:
+      message: created
+    properties:
+      message:
+        description: トークン
+        example: created
+        type: string
+    title: 'Mediatype identifier: application/vnd.message+json; view=default'
+    type: object
   Token:
     description: ユーザー情報 (default view)
     example:
@@ -714,11 +725,6 @@ paths:
       description: 正規ユーザーの作成
       operationId: users#account create
       parameters:
-      - description: アプリのバージョン
-        in: query
-        name: client_version
-        required: true
-        type: string
       - description: メールアドレス
         format: email
         in: query
@@ -728,19 +734,14 @@ paths:
       - description: 識別子(android:Android_ID, ios:IDFV)
         in: query
         name: identifier
-        pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)
-        required: true
-        type: string
-      - description: OSとバージョン
-        in: query
-        name: platform
+        pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)
         required: true
         type: string
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Token'
+            $ref: '#/definitions/Message'
         "400":
           description: Bad Request
           schema:
@@ -752,6 +753,35 @@ paths:
       security:
       - key: []
       summary: account create users
+      tags:
+      - users
+  /users/status:
+    put:
+      description: 一時ユーザーの作成
+      operationId: users#account terminal status update
+      parameters:
+      - description: アプリのバージョン
+        in: query
+        name: client_version
+        required: true
+        type: string
+      - description: OSとバージョン
+        in: query
+        name: platform
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      security:
+      - key: []
+      summary: account terminal status update users
       tags:
       - users
   /users/tmp:
@@ -767,7 +797,7 @@ paths:
       - description: 識別子(android:Android_ID, ios:IDFV)
         in: query
         name: identifier
-        pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)
+        pattern: (^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)
         required: true
         type: string
       - description: OSとバージョン

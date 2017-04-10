@@ -117,13 +117,26 @@ var _ = Resource("users", func() {
 			Param("client_version", String, "アプリのバージョン")
 			Param("platform", String, "OSとバージョン")
 			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
-				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
+				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{36}$)")
 			})
 			Required("client_version", "platform", "identifier")
 		})
 		Description("一時ユーザーの作成")
 		NoSecurity()
 		Response(OK, Token)
+		Response(BadRequest, ErrorMedia)
+	})
+	Action("account terminal status update", func() {
+		Routing(
+			PUT("/status"),
+		)
+		Params(func() {
+			Param("client_version", String, "アプリのバージョン")
+			Param("platform", String, "OSとバージョン")
+			Required("client_version", "platform")
+		})
+		Description("一時ユーザーの作成")
+		Response(OK)
 		Response(BadRequest, ErrorMedia)
 	})
 	Action("account create", func() {
@@ -134,15 +147,13 @@ var _ = Resource("users", func() {
 			Param("email", String, "メールアドレス", func() {
 				Format(goa.FormatEmail)
 			})
-			Param("client_version", String, "アプリのバージョン")
-			Param("platform", String, "OSとバージョン")
 			Param("identifier", String, "識別子(android:Android_ID, ios:IDFV)", func() {
-				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{32}$)")
+				Pattern("(^[a-z0-9]{16}$|^[a-z0-9\\-]{36}$)")
 			})
-			Required("email", "client_version", "platform", "identifier")
+			Required("email", "identifier")
 		})
 		Description("正規ユーザーの作成")
-		Response(OK, Token)
+		Response(OK, Message)
 		Response(Unauthorized)
 		Response(BadRequest, ErrorMedia)
 	})

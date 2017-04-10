@@ -136,7 +136,7 @@ var _ = StorageGroup("eventory", func() {
 			Field("platform", gorma.String)
 			Field("client_version", gorma.String)
 			Field("token", gorma.String)
-			Field("identifier", gorma.Boolean)
+			Field("identifier", gorma.String)
 			Field("created_at", gorma.Timestamp)
 			Field("updated_at", gorma.Timestamp)
 			Field("deleted_at", gorma.NullableTimestamp)

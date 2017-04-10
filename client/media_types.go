@@ -134,6 +134,21 @@ func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, e
 	return &decoded, err
 }
 
+// ユーザー情報 (default view)
+//
+// Identifier: application/vnd.message+json; view=default
+type Message struct {
+	// トークン
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+}
+
+// DecodeMessage decodes the Message instance encoded in resp body.
+func (c *Client) DecodeMessage(resp *http.Response) (*Message, error) {
+	var decoded Message
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // 都道府県 (default view)
 //
 // Identifier: application/vnd.pref+json; view=default

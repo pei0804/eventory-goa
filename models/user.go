@@ -88,6 +88,18 @@ func (m *UserDB) Get(ctx context.Context, id int) (*User, error) {
 	return &native, err
 }
 
+func (m *UserDB) GetByEmail(ctx context.Context, email string) (*User, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "userTerminal", "get by email"}, time.Now())
+
+	var native User
+	err := m.Db.Table(m.TableName()).Where("email = ?", email).Find(&native).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &native, err
+}
+
 // List returns an array of User
 func (m *UserDB) List(ctx context.Context) ([]*User, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "user", "list"}, time.Now())
@@ -105,7 +117,7 @@ func (m *UserDB) List(ctx context.Context) ([]*User, error) {
 func (m *UserDB) Add(ctx context.Context, model *User) error {
 	defer goa.MeasureSince([]string{"goa", "db", "user", "add"}, time.Now())
 
-	err := m.Db.Create(model).Error
+	err := m.Db.Create(&model).Error
 	if err != nil {
 		goa.LogError(ctx, "error adding User", "error", err.Error())
 		return err

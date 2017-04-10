@@ -13,9 +13,12 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
+	"github.com/jinzhu/gorm"
 	"github.com/tikasan/eventory-goa/app"
 	"github.com/tikasan/eventory-goa/controller"
 	"github.com/tikasan/eventory-goa/database"
+	"github.com/tikasan/eventory-goa/models"
+	"github.com/tikasan/eventory-goa/utility"
 )
 
 func init() {
@@ -28,8 +31,6 @@ func init() {
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
 
-	app.UseKeyMiddleware(service, NewAPIKeyMiddleware())
-
 	cs, err := database.NewConfigsFromFile("dbconfig.yml")
 	if err != nil {
 		log.Fatalf("cannot open database configuration. exit. %s", err)
@@ -38,6 +39,8 @@ func init() {
 	if err != nil {
 		log.Fatalf("database initialization failed: %s", err)
 	}
+
+	app.UseKeyMiddleware(service, NewAPIKeyMiddleware(dbcon))
 
 	// Mount "events" controller
 	c := controller.NewEventsController(service, dbcon)
@@ -56,7 +59,7 @@ func init() {
 	http.HandleFunc("/", service.Mux.ServeHTTP)
 }
 
-func NewAPIKeyMiddleware() goa.Middleware {
+func NewAPIKeyMiddleware(db *gorm.DB) goa.Middleware {
 
 	// Instantiate API Key security scheme details generated from design
 	scheme := app.NewKeySecurity()
@@ -65,14 +68,21 @@ func NewAPIKeyMiddleware() goa.Middleware {
 	return func(h goa.Handler) goa.Handler {
 		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 			// Retrieve and log header specified by scheme
-			key := req.Header.Get(scheme.Name)
+			token := req.Header.Get(scheme.Name)
 			// A real app would do something more interesting here
-			if len(key) == 0 || key == "Bearer" {
-				goa.LogInfo(ctx, "failed api key auth")
+			if len(token) == 0 || token == "Bearer" {
+				goa.LogInfo(ctx, "failed api token auth")
 				return errors.Unauthenticated("missing auth")
 			}
+			userTerminalDB := models.NewUserTerminalDB(db)
+			userID, err := userTerminalDB.GetUserIDByToken(ctx, token)
+			if err != nil {
+				goa.LogInfo(ctx, "failed api token auth")
+				return errors.Unauthenticated("missing auth")
+			}
+			utility.SetToken(ctx, userID)
 			// Proceed.
-			goa.LogInfo(ctx, "auth", "apikey", "key", key)
+			goa.LogInfo(ctx, "auth", "apikey", "token", token)
 			return h(ctx, rw, req)
 		}
 

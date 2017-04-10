@@ -30,8 +30,8 @@ func (c *Client) NewKeepEventEventsRequest(ctx context.Context, path string, isK
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
-	tmp10 := strconv.FormatBool(isKeep)
-	values.Set("isKeep", tmp10)
+	tmp11 := strconv.FormatBool(isKeep)
+	values.Set("isKeep", tmp11)
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("PUT", u.String(), nil)
 	if err != nil {
@@ -91,8 +91,8 @@ func (c *Client) NewListEventsRequest(ctx context.Context, path string, page *in
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if page != nil {
-		tmp11 := strconv.Itoa(*page)
-		values.Set("page", tmp11)
+		tmp12 := strconv.Itoa(*page)
+		values.Set("page", tmp12)
 	}
 	if q != nil {
 		values.Set("q", *q)

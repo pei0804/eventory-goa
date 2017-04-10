@@ -13,5 +13,5 @@ func ToHash(str string) string {
 }
 
 func CreateToken(str string) string {
-	return fmt.Sprintf("%s%s", time.Now().String(), str)
+	return ToHash(fmt.Sprintf("%s%s", time.Now().String(), str))
 }

@@ -277,6 +277,7 @@ func handlePrefsOrigin(h goa.Handler) goa.Handler {
 type UsersController interface {
 	goa.Muxer
 	AccountCreate(*AccountCreateUsersContext) error
+	AccountTerminalStatusUpdate(*AccountTerminalStatusUpdateUsersContext) error
 	TmpAccountCreate(*TmpAccountCreateUsersContext) error
 }
 
@@ -285,6 +286,7 @@ func MountUsersController(service *goa.Service, ctrl UsersController) {
 	initService(service)
 	var h goa.Handler
 	service.Mux.Handle("OPTIONS", "/api/v2/users/new", ctrl.MuxHandler("preflight", handleUsersOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/api/v2/users/status", ctrl.MuxHandler("preflight", handleUsersOrigin(cors.HandlePreflight()), nil))
 	service.Mux.Handle("OPTIONS", "/api/v2/users/tmp", ctrl.MuxHandler("preflight", handleUsersOrigin(cors.HandlePreflight()), nil))
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
@@ -303,6 +305,23 @@ func MountUsersController(service *goa.Service, ctrl UsersController) {
 	h = handleUsersOrigin(h)
 	service.Mux.Handle("POST", "/api/v2/users/new", ctrl.MuxHandler("AccountCreate", h, nil))
 	service.LogInfo("mount", "ctrl", "Users", "action", "AccountCreate", "route", "POST /api/v2/users/new", "security", "key")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewAccountTerminalStatusUpdateUsersContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.AccountTerminalStatusUpdate(rctx)
+	}
+	h = handleSecurity("key", h)
+	h = handleUsersOrigin(h)
+	service.Mux.Handle("PUT", "/api/v2/users/status", ctrl.MuxHandler("AccountTerminalStatusUpdate", h, nil))
+	service.LogInfo("mount", "ctrl", "Users", "action", "AccountTerminalStatusUpdate", "route", "PUT /api/v2/users/status", "security", "key")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request

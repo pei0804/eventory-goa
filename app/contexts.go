@@ -370,10 +370,8 @@ type AccountCreateUsersContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	ClientVersion string
-	Email         string
-	Identifier    string
-	Platform      string
+	Email      string
+	Identifier string
 }
 
 // NewAccountCreateUsersContext parses the incoming request URL and body, performs validations and creates the
@@ -384,13 +382,6 @@ func NewAccountCreateUsersContext(ctx context.Context, service *goa.Service) (*A
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	rctx := AccountCreateUsersContext{Context: ctx, ResponseData: resp, RequestData: req}
-	paramClientVersion := req.Params["client_version"]
-	if len(paramClientVersion) == 0 {
-		err = goa.MergeErrors(err, goa.MissingParamError("client_version"))
-	} else {
-		rawClientVersion := paramClientVersion[0]
-		rctx.ClientVersion = rawClientVersion
-	}
 	paramEmail := req.Params["email"]
 	if len(paramEmail) == 0 {
 		err = goa.MergeErrors(err, goa.MissingParamError("email"))
@@ -407,23 +398,16 @@ func NewAccountCreateUsersContext(ctx context.Context, service *goa.Service) (*A
 	} else {
 		rawIdentifier := paramIdentifier[0]
 		rctx.Identifier = rawIdentifier
-		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, rctx.Identifier); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
+		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)`, rctx.Identifier); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)`))
 		}
-	}
-	paramPlatform := req.Params["platform"]
-	if len(paramPlatform) == 0 {
-		err = goa.MergeErrors(err, goa.MissingParamError("platform"))
-	} else {
-		rawPlatform := paramPlatform[0]
-		rctx.Platform = rawPlatform
 	}
 	return &rctx, err
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *AccountCreateUsersContext) OK(r *Token) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.token+json")
+func (ctx *AccountCreateUsersContext) OK(r *Message) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.message+json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -437,6 +421,54 @@ func (ctx *AccountCreateUsersContext) BadRequest(r error) error {
 func (ctx *AccountCreateUsersContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
 	return nil
+}
+
+// AccountTerminalStatusUpdateUsersContext provides the users account terminal status update action context.
+type AccountTerminalStatusUpdateUsersContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ClientVersion string
+	Platform      string
+}
+
+// NewAccountTerminalStatusUpdateUsersContext parses the incoming request URL and body, performs validations and creates the
+// context used by the users controller account terminal status update action.
+func NewAccountTerminalStatusUpdateUsersContext(ctx context.Context, service *goa.Service) (*AccountTerminalStatusUpdateUsersContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	rctx := AccountTerminalStatusUpdateUsersContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramClientVersion := req.Params["client_version"]
+	if len(paramClientVersion) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("client_version"))
+	} else {
+		rawClientVersion := paramClientVersion[0]
+		rctx.ClientVersion = rawClientVersion
+	}
+	paramPlatform := req.Params["platform"]
+	if len(paramPlatform) == 0 {
+		err = goa.MergeErrors(err, goa.MissingParamError("platform"))
+	} else {
+		rawPlatform := paramPlatform[0]
+		rctx.Platform = rawPlatform
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *AccountTerminalStatusUpdateUsersContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *AccountTerminalStatusUpdateUsersContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
 
 // TmpAccountCreateUsersContext provides the users tmp account create action context.
@@ -470,8 +502,8 @@ func NewTmpAccountCreateUsersContext(ctx context.Context, service *goa.Service) 
 	} else {
 		rawIdentifier := paramIdentifier[0]
 		rctx.Identifier = rawIdentifier
-		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`, rctx.Identifier); !ok {
-			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{32}$)`))
+		if ok := goa.ValidatePattern(`(^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)`, rctx.Identifier); !ok {
+			err = goa.MergeErrors(err, goa.InvalidPatternError(`identifier`, rctx.Identifier, `(^[a-z0-9]{16}$|^[a-z0-9\-]{36}$)`))
 		}
 	}
 	paramPlatform := req.Params["platform"]

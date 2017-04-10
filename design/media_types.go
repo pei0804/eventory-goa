@@ -98,3 +98,15 @@ var Token = MediaType("application/vnd.token+json", func() {
 		Attribute("token")
 	})
 })
+
+var Message = MediaType("application/vnd.message+json", func() {
+	Description("ユーザー情報")
+	Attributes(func() {
+		Attribute("message", String, "トークン", func() {
+			Example("created")
+		})
+	})
+	View("default", func() {
+		Attribute("message")
+	})
+})
