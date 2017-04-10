@@ -106,11 +106,11 @@ func UserFollowEventFilterByUser(userID int, originaldb *gorm.DB) func(db *gorm.
 
 // Get returns a single UserFollowEvent as a Database Model
 // This is more for use internally, and probably not what you want in  your controllers
-func (m *UserFollowEventDB) Get(ctx context.Context, id int) (*UserFollowEvent, error) {
+func (m *UserFollowEventDB) Get(ctx context.Context, userID int, eventID int) (*UserFollowEvent, error) {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowEvent", "get"}, time.Now())
 
 	var native UserFollowEvent
-	err := m.Db.Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	err := m.Db.Table(m.TableName()).Where("user_id = ?", userID).Where("event_id = ?", eventID).Find(&native).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, err
 	}
@@ -148,13 +148,29 @@ func (m *UserFollowEventDB) Add(ctx context.Context, model *UserFollowEvent) err
 func (m *UserFollowEventDB) Update(ctx context.Context, model *UserFollowEvent) error {
 	defer goa.MeasureSince([]string{"goa", "db", "userFollowEvent", "update"}, time.Now())
 
-	obj, err := m.Get(ctx, model.ID)
+	obj, err := m.Get(ctx, model.UserID, model.EventID)
 	if err != nil {
 		goa.LogError(ctx, "error updating UserFollowEvent", "error", err.Error())
 		return err
 	}
 	err = m.Db.Model(obj).Updates(model).Error
 
+	return err
+}
+
+// Upsert modifies a single record.
+func (m *UserFollowEventDB) Upsert(ctx context.Context, model *UserFollowEvent) error {
+	defer goa.MeasureSince([]string{"goa", "db", "userFollowEvent", "update"}, time.Now())
+
+	err := m.Db.Create(model).Error
+	if err != nil {
+		obj, err := m.Get(ctx, model.UserID, model.EventID)
+		if err != nil {
+			goa.LogError(ctx, "error upsert UserFollowEvent", "error", err.Error())
+			return err
+		}
+		err = m.Db.Model(obj).Updates(model).Error
+	}
 	return err
 }
 
