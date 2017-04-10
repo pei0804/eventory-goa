@@ -89,4 +89,4 @@ rollback:
 	appcfg.py rollback ./app -A $(PROJECT)
 
 local:
-	goapp serve ./app
+	goapp serve ./server
