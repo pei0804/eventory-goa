@@ -89,7 +89,7 @@ type ListEventsContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	ID   string
-	Page *int
+	Page int
 	Q    string
 	Sort string
 }
@@ -111,16 +111,12 @@ func NewListEventsContext(ctx context.Context, service *goa.Service) (*ListEvent
 	if len(paramPage) > 0 {
 		rawPage := paramPage[0]
 		if page, err2 := strconv.Atoi(rawPage); err2 == nil {
-			tmp4 := page
-			tmp3 := &tmp4
-			rctx.Page = tmp3
+			rctx.Page = page
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("page", rawPage, "integer"))
 		}
-		if rctx.Page != nil {
-			if *rctx.Page < 0 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError(`page`, *rctx.Page, 0, true))
-			}
+		if rctx.Page < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`page`, rctx.Page, 1, true))
 		}
 	}
 	paramQ := req.Params["q"]

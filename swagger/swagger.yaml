@@ -247,9 +247,10 @@ paths:
         name: id
         required: true
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer
@@ -292,9 +293,10 @@ paths:
         name: id
         required: false
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer
@@ -337,9 +339,10 @@ paths:
         name: id
         required: false
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer
@@ -382,9 +385,10 @@ paths:
         name: id
         required: false
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer
@@ -427,9 +431,10 @@ paths:
         name: id
         required: false
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer
@@ -472,9 +477,10 @@ paths:
         name: id
         required: false
         type: string
-      - description: ページ(1->2->3->4)
+      - default: 0
+        description: ページ(1->2->3->4)
         in: query
-        minimum: 0
+        minimum: 1
         name: page
         required: false
         type: integer

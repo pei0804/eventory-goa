@@ -305,7 +305,7 @@ func KeepEventEventsUnauthorized(t goatest.TInterface, ctx context.Context, serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -326,8 +326,8 @@ func ListEventsBadRequest(t goatest.TInterface, ctx context.Context, service *go
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -348,8 +348,8 @@ func ListEventsBadRequest(t goatest.TInterface, ctx context.Context, service *go
 	}
 	prms := url.Values{}
 	prms["id"] = []string{fmt.Sprintf("%v", id)}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -396,7 +396,7 @@ func ListEventsBadRequest(t goatest.TInterface, ctx context.Context, service *go
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -417,8 +417,8 @@ func ListEventsBadRequest1(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -438,8 +438,8 @@ func ListEventsBadRequest1(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -486,7 +486,7 @@ func ListEventsBadRequest1(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -507,8 +507,8 @@ func ListEventsBadRequest2(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -528,8 +528,8 @@ func ListEventsBadRequest2(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -576,7 +576,7 @@ func ListEventsBadRequest2(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -597,8 +597,8 @@ func ListEventsBadRequest3(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -618,8 +618,8 @@ func ListEventsBadRequest3(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -666,7 +666,7 @@ func ListEventsBadRequest3(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -687,8 +687,8 @@ func ListEventsBadRequest4(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -708,8 +708,8 @@ func ListEventsBadRequest4(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -756,7 +756,7 @@ func ListEventsBadRequest4(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsBadRequest5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, error) {
+func ListEventsBadRequest5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -777,8 +777,8 @@ func ListEventsBadRequest5(t goatest.TInterface, ctx context.Context, service *g
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -798,8 +798,8 @@ func ListEventsBadRequest5(t goatest.TInterface, ctx context.Context, service *g
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -846,7 +846,7 @@ func ListEventsBadRequest5(t goatest.TInterface, ctx context.Context, service *g
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -867,8 +867,8 @@ func ListEventsOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -889,8 +889,8 @@ func ListEventsOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 	}
 	prms := url.Values{}
 	prms["id"] = []string{fmt.Sprintf("%v", id)}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -941,7 +941,7 @@ func ListEventsOK(t goatest.TInterface, ctx context.Context, service *goa.Servic
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -962,8 +962,8 @@ func ListEventsOK1(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -983,8 +983,8 @@ func ListEventsOK1(t goatest.TInterface, ctx context.Context, service *goa.Servi
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1035,7 +1035,7 @@ func ListEventsOK1(t goatest.TInterface, ctx context.Context, service *goa.Servi
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1056,8 +1056,8 @@ func ListEventsOK2(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1077,8 +1077,8 @@ func ListEventsOK2(t goatest.TInterface, ctx context.Context, service *goa.Servi
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1129,7 +1129,7 @@ func ListEventsOK2(t goatest.TInterface, ctx context.Context, service *goa.Servi
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1150,8 +1150,8 @@ func ListEventsOK3(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1171,8 +1171,8 @@ func ListEventsOK3(t goatest.TInterface, ctx context.Context, service *goa.Servi
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1223,7 +1223,7 @@ func ListEventsOK3(t goatest.TInterface, ctx context.Context, service *goa.Servi
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1244,8 +1244,8 @@ func ListEventsOK4(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1265,8 +1265,8 @@ func ListEventsOK4(t goatest.TInterface, ctx context.Context, service *goa.Servi
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1317,7 +1317,7 @@ func ListEventsOK4(t goatest.TInterface, ctx context.Context, service *goa.Servi
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsOK5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
+func ListEventsOK5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) (http.ResponseWriter, app.EventCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1338,8 +1338,8 @@ func ListEventsOK5(t goatest.TInterface, ctx context.Context, service *goa.Servi
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1359,8 +1359,8 @@ func ListEventsOK5(t goatest.TInterface, ctx context.Context, service *goa.Servi
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1411,7 +1411,7 @@ func ListEventsOK5(t goatest.TInterface, ctx context.Context, service *goa.Servi
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, id string, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1432,8 +1432,8 @@ func ListEventsUnauthorized(t goatest.TInterface, ctx context.Context, service *
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1454,8 +1454,8 @@ func ListEventsUnauthorized(t goatest.TInterface, ctx context.Context, service *
 	}
 	prms := url.Values{}
 	prms["id"] = []string{fmt.Sprintf("%v", id)}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1494,7 +1494,7 @@ func ListEventsUnauthorized(t goatest.TInterface, ctx context.Context, service *
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized1(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1515,8 +1515,8 @@ func ListEventsUnauthorized1(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1536,8 +1536,8 @@ func ListEventsUnauthorized1(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1576,7 +1576,7 @@ func ListEventsUnauthorized1(t goatest.TInterface, ctx context.Context, service 
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized2(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1597,8 +1597,8 @@ func ListEventsUnauthorized2(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1618,8 +1618,8 @@ func ListEventsUnauthorized2(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1658,7 +1658,7 @@ func ListEventsUnauthorized2(t goatest.TInterface, ctx context.Context, service 
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized3(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1679,8 +1679,8 @@ func ListEventsUnauthorized3(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1700,8 +1700,8 @@ func ListEventsUnauthorized3(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1740,7 +1740,7 @@ func ListEventsUnauthorized3(t goatest.TInterface, ctx context.Context, service 
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized4(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1761,8 +1761,8 @@ func ListEventsUnauthorized4(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1782,8 +1782,8 @@ func ListEventsUnauthorized4(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{
@@ -1822,7 +1822,7 @@ func ListEventsUnauthorized4(t goatest.TInterface, ctx context.Context, service 
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListEventsUnauthorized5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page *int, q string, sort string) http.ResponseWriter {
+func ListEventsUnauthorized5(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.EventsController, page int, q string, sort string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1843,8 +1843,8 @@ func ListEventsUnauthorized5(t goatest.TInterface, ctx context.Context, service 
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		query["page"] = sliceVal
 	}
 	{
@@ -1864,8 +1864,8 @@ func ListEventsUnauthorized5(t goatest.TInterface, ctx context.Context, service 
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if page != nil {
-		sliceVal := []string{strconv.Itoa(*page)}
+	{
+		sliceVal := []string{strconv.Itoa(page)}
 		prms["page"] = sliceVal
 	}
 	{

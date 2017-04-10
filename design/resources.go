@@ -27,7 +27,8 @@ var _ = Resource("events", func() {
 				Default("")
 			})
 			Param("page", Integer, "ページ(1->2->3->4)", func() {
-				Minimum(0)
+				Minimum(1)
+				Default(0)
 			})
 
 		})
