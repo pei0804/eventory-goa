@@ -30,11 +30,11 @@ func init() {
 
 	app.UseKeyMiddleware(service, NewAPIKeyMiddleware())
 
-	cs, err := db.NewConfigsFromFile()
+	cs, err := db.NewConfigsFromFile("dbconfig.yml")
 	if err != nil {
 		log.Fatalf("cannot open database configuration. exit. %s", err)
 	}
-	dbcon, err := cs.Open()
+	dbcon, err := cs.Open("setting")
 	if err != nil {
 		log.Fatalf("db initialization failed: %s", err)
 	}
