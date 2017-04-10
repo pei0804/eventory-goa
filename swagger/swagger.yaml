@@ -262,6 +262,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false
@@ -308,6 +312,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false
@@ -354,6 +362,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false
@@ -400,6 +412,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false
@@ -446,6 +462,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false
@@ -492,6 +512,10 @@ paths:
         type: string
       - default: ""
         description: ソート
+        enum:
+        - created_asc
+        - created_desc
+        - ""
         in: query
         name: sort
         required: false

@@ -24,6 +24,7 @@ var _ = Resource("events", func() {
 				Default("")
 			})
 			Param("sort", String, "ソート", func() {
+				Enum("created_asc", "created_desc", "")
 				Default("")
 			})
 			Param("page", Integer, "ページ(1->2->3->4)", func() {

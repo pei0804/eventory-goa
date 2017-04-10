@@ -128,6 +128,9 @@ func NewListEventsContext(ctx context.Context, service *goa.Service) (*ListEvent
 	if len(paramSort) > 0 {
 		rawSort := paramSort[0]
 		rctx.Sort = rawSort
+		if !(rctx.Sort == "created_asc" || rctx.Sort == "created_desc" || rctx.Sort == "") {
+			err = goa.MergeErrors(err, goa.InvalidEnumValueError(`sort`, rctx.Sort, []interface{}{"created_asc", "created_desc", ""}))
+		}
 	}
 	return &rctx, err
 }

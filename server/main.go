@@ -15,7 +15,7 @@ import (
 	"github.com/goadesign/goa/middleware"
 	"github.com/tikasan/eventory-goa/app"
 	"github.com/tikasan/eventory-goa/controller"
-	"github.com/tikasan/eventory-goa/db"
+	"github.com/tikasan/eventory-goa/database"
 )
 
 func init() {
@@ -30,13 +30,13 @@ func init() {
 
 	app.UseKeyMiddleware(service, NewAPIKeyMiddleware())
 
-	cs, err := db.NewConfigsFromFile("dbconfig.yml")
+	cs, err := database.NewConfigsFromFile("dbconfig.yml")
 	if err != nil {
 		log.Fatalf("cannot open database configuration. exit. %s", err)
 	}
 	dbcon, err := cs.Open("setting")
 	if err != nil {
-		log.Fatalf("db initialization failed: %s", err)
+		log.Fatalf("database initialization failed: %s", err)
 	}
 
 	// Mount "events" controller
